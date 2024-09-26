@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+<section class="page-title">
+    <div class="auto-container">
+        <div class="title-outer">
+            <h1>Избранное</h1>
+            <ul class="page-breadcrumb">
+                <li><a href="/">Главная</a></li>
+                <li>Избранное</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="cart-section">
+    <div class="auto-container">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <!-- Ls widget -->
+                <div class="ls-widget">
+                    <div class="tabs-box" style="min-height: 500px;">
+
+                        <div class="widget-content">
+                            <form method="GET" class="mb-5" action="{% url 'favorites:favorites-list' %}">
+                                <div class="d-flex mb-3 form-group col-lg-6 col-md-12">
+                                    {{ search_form.query }}
+                                    <button type="submit" class=" align-items-center btn-style-one bg-blue"
+                                            style="margin-left: 5px; background-color: #34A853;">Поиск
+                                    </button>
+                                </div>
+                            </form>
+                            <div class="tabs-box">
+                                <div class="tabs-content">
+                                    <!--Tab-->
+                                    <div class="tab active-tab" id="totals">
+                                        <div class="row">
+                                            {% if favorites %}
+                                            {% for favorite in favorites %}
+                                            <div class="candidate-block-three col-lg-6 col-md-12 col-sm-12">
+                                                <div class="inner-box">
+                                                    <div class="content">
+                                                        <figure class="image">
+                                                          {% if favorite.job.employer.profile.company_profile.logo %}
+                                                            <!-- Если есть логотип компании -->
+                                                            <img src="{{ favorite.job.employer.profile.company_profile.logo.url }}" alt="Company Logo">
+                                                          {% elif favorite.job.employer.profile.image %}
+                                                            <!-- Если нет логотипа компании, но есть фото профиля -->
+                                                            <img src="{{ favorite.job.employer.profile.image.url }}" alt="Profile Image">
+                                                          {% else %}
+                                                            <!-- Если нет ни логотипа компании, ни фото профиля -->
+                                                            <img src="{% static 'izdey_logo.png' %}" alt="Default Image">
+                                                          {% endif %}
+                                                        </figure>
+
+                                                        <h4 class="name"><a
+                                                                href="{% url 'jobs:vacancy-detail' pk=favorite.job.pk %}">{{ favorite.job.title }}</a></h4>
+                                                        <ul class="candidate-info">
+                                                            <li class="designation">{{ favorite.job.date }}</li>
+                                                            <li><span class="icon flaticon-map-locator"></span>{{ favorite.job.get_location_display }}
+                                                            </li>
+                                                            <li><span class="icon flaticon-money"></span> {{ favorite.job.pay_rate }} тенге
+                                                            </li>
+                                                        </ul>
+                                                        <ul class="post-tags">
+                                                            <li style="background: rgba(52, 168, 83, 0.15);"><a
+                                                                    style="color: #34A853;">{{ favorite.job.get_time_count_display }}</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="option-box">
+                                                        <ul class="option-list">
+                                                            <li style="background: rgba(52, 168, 83, 0.15); border-radius: 25%;">
+                                                                <a style="color: #34A853;"
+                                                                   href="{% url 'jobs:vacancy-detail' pk=favorite.job.pk %}"
+                                                                   data-text="Подробнее"><span class="la la-eye"></span></a>
+                                                            </li>
+                                                            <li>
+                                                                <form method="post"
+                                                                      action="{% url 'jobs:remove_from_favorites' job_id=favorite.job.pk %}">
+                                                                    {% csrf_token %}
+                                                                    <button type="submit"
+                                                                            style="background-color: #ec2929;"
+                                                                            data-text="Delete Aplication"
+                                                                            class="delete-button">
+                                                                        <span style="color: white;"
+                                                                              class="la la-trash"></span>
+                                                                    </button>
+                                                                </form>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                            {% else %}
+                                            <div class="container text-center" style="margin-top: 20px;">
+                                                <p>Вы еще не добавили ничего в избранное.</p>
+                                            </div>
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

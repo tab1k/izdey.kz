@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="ls-section" style="border: none; padding-top: 20px; min-height: 600px;">
+
+    <div class="auto-container">
+
+        <div class="job-block" style="border-radius: 30px;">
+            <h1>Уведомления</h1>
+        </div>
+
+
+        <div class="job-block" style="background-color: #fff; border-radius: 10px; max-width: 400px;">
+            <div class="inner-box">
+                <div class="container">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <!-- Мой профиль -->
+                        <a style="color: black;" href="{% url 'notifications:notification_card' %}">
+                            <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                                <div style="display: flex; align-items: center;">
+                                    <span class="icon fi fi-rr-credit-card"
+                                          style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                    <span style="font-size: 16px; font-weight: 500;">Операции по карте</span>
+                                </div>
+                                <span style="color: #333; font-size: 20px;">&rsaquo;</span>
+                            </li>
+                        </a>
+
+                        <a style="color: black;" href="{% url 'notifications:notification_system' %}">
+                            <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                                <div style="display: flex; align-items: center;">
+                                    <span class="icon fi fi-rr-mobile-notch" style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                    <span style="font-size: 16px; font-weight: 500;">Системные</span>
+                                </div>
+                                <span style="color: #333; font-size: 20px;">&rsaquo;</span>
+                            </li>
+                        </a>
+
+                        <a style="color: black;" href="#">
+                            <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                                <div style="display: flex; align-items: center;">
+                                    <span class="icon fi fi-rr-star" style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                    <span style="font-size: 16px; font-weight: 500;">Специально для вас</span>
+                                </div>
+                                <span style="color: #333; font-size: 20px;">&rsaquo;</span>
+                            </li>
+                        </a>
+
+                        <!-- Кошелек -->
+                        <a style="color: black;" href="#">
+                            <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0;">
+                                <div style="display: flex; align-items: center;">
+                                    <span class="icon fi fi-rr-megaphone" style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                    <span style="font-size: 16px; font-weight: 500;">Акции</span>
+                                </div>
+                                <span style="color: #333; font-size: 20px;">&rsaquo;</span>
+                            </li>
+                        </a>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+{% endblock %}

@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование данных компании</title>
+</head>
+<body>
+{% block content %}
+<div class="container mt-5">
+    <!-- Кнопка "Назад" -->
+    <a href="javascript:history.back()" class="back-button">
+        <div style="margin-top: 4px;">
+            <span class="icon fi fi-rr-angle-left" style="font-size: 15px; margin-right: 5px;"></span>
+        </div>
+        Назад
+    </a>
+    <h2 class="mt-3 mb-3">Редактирование данных компании</h2>
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_BIN">{{ form.BIN.label }}</label>
+            {{ form.BIN }}
+            {% if form.BIN.errors %}
+            <div class="text-danger">{{ form.BIN.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_name">{{ form.name.label }}</label>
+            {{ form.name }}
+            {% if form.name.errors %}
+            <div class="text-danger">{{ form.name.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_legal_address">{{ form.legal_address.label }}</label>
+            {{ form.legal_address }}
+            {% if form.legal_address.errors %}
+            <div class="text-danger">{{ form.legal_address.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_actual_address">{{ form.actual_address.label }}</label>
+            {{ form.actual_address }}
+            {% if form.actual_address.errors %}
+            <div class="text-danger">{{ form.actual_address.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_phone_number">{{ form.phone_number.label }}</label>
+            {{ form.phone_number }}
+            {% if form.phone_number.errors %}
+            <div class="text-danger">{{ form.phone_number.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_email">{{ form.email.label }}</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+            <div class="text-danger">{{ form.email.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_website">{{ form.website.label }}</label>
+            {{ form.website }}
+            {% if form.website.errors %}
+            <div class="text-danger">{{ form.website.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_director_name">{{ form.director_name.label }}</label>
+            {{ form.director_name }}
+            {% if form.director_name.errors %}
+            <div class="text-danger">{{ form.director_name.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_bank_account">{{ form.bank_account.label }}</label>
+            {{ form.bank_account }}
+            {% if form.bank_account.errors %}
+            <div class="text-danger">{{ form.bank_account.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_bank_name">{{ form.bank_name.label }}</label>
+            {{ form.bank_name }}
+            {% if form.bank_name.errors %}
+            <div class="text-danger">{{ form.bank_name.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_BIK">{{ form.BIK.label }}</label>
+            {{ form.BIK }}
+            {% if form.BIK.errors %}
+            <div class="text-danger">{{ form.BIK.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_KBE">{{ form.KBE.label }}</label>
+            {{ form.KBE }}
+            {% if form.KBE.errors %}
+            <div class="text-danger">{{ form.KBE.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_OKED">{{ form.OKED.label }}</label>
+            {{ form.OKED }}
+            {% if form.OKED.errors %}
+            <div class="text-danger">{{ form.OKED.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_registration_date">{{ form.registration_date.label }}</label>
+            {{ form.registration_date }}
+            {% if form.registration_date.errors %}
+            <div class="text-danger">{{ form.registration_date.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_logo">{{ form.logo.label }}</label>
+            {{ form.logo }}
+            {% if form.logo.errors %}
+            <div class="text-danger">{{ form.logo.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="id_documents">{{ form.documents.label }}</label>
+            {{ form.documents }}
+            {% if form.documents.errors %}
+            <div class="text-danger">{{ form.documents.errors }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary" style="background-color: #34A853; margin-top: 10px;">Сохранить
+            изменения
+        </button>
+    </form>
+</div>
+<style>
+    .back-button {
+        top: 15px;
+        left: 15px;
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        font-weight: 500;
+        color: #007AFF; /* Синий цвет в стиле iOS */
+        text-decoration: none;
+        padding: 0px 10px;
+        background-color: transparent;
+        border-radius: 5px;
+        transition: background-color 0.2s ease;
+        z-index: 1000;
+        margin-bottom: 15px;
+    }
+
+    .back-button:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+
+</style>
+{% endblock %}
+</body>
+</html>

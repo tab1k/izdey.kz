@@ -1,0 +1,8 @@
+# Virtual Environment
+venv/
+# IntelliJ IDEA
+.idea/
+# Other common ignores
+*.pyc
+**/__pycache__/**
+db.sqlite3

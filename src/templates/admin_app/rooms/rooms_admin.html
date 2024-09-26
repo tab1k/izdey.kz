@@ -1,0 +1,127 @@
+{% extends 'admin_app/base.html' %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% block content %}
+        <div id="dashboard-wrapper" class="dashboard-outer">
+            <div class="dashboard-inner">
+              <!-- Dashboard Wrapper -->
+              <div class="dashboard-wrapper">
+                <div id="main-dashboard" class="section-wrapper">
+                  <!-- Dashboard content -->
+                  <div class="dashboard-columns">
+                    <!-- Page title -->
+                    <div class="contacts-title-wrapper">
+                      <h3 class="contacts-title">Голосовые комнаты</h3>
+                      <!-- Filter input -->
+                      <div class="list-filter">
+                        <div class="control has-icon b-hidden-mobile">
+                          <input class="input" type="text" placeholder="Filter Contacts">
+                          <div class="form-icon">
+                            <iconify-icon class="iconify" icon="lucide:filter"></iconify-icon>
+                          </div>
+                        </div>
+                        <!-- Add contact button -->
+                        <a @click="toggleNewContactModal()" class="button is-secondary is-raised is-long-1"> <span class="icon is-small"> <i class="fas fa-plus"></i> </span> <span>Новая комната</span> </a>
+                      </div>
+                    </div>
+                    <!-- Contacts grid -->
+                    <div class="columns is-multiline is-contacts-grid">
+                      {% for r in rooms %}
+                      <div class="column is-4">
+                        <div class="contact-card">
+
+                          <!-- Contact info -->
+                          <div class="contact-block">
+                            <img src="{% static 'images/favicon.png' %}" alt="">
+                            <div class="contact-meta"> <span class="name"><a href="{% url 'admin_app:rooms_detail' pk=r.pk%}">{{ r.name }}</a></span>
+                              <span class="position">{{ r.time_start }}</span>
+                              <a href="{{ r.link }}" class="email">{{ r.link|slice:":15" }}</a> </div>
+                          </div>
+                          <div class="contact-actions"> <small class="tag is-curved">{{ r.get_status_display }}</small>
+
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Create contact Modal -->
+            <div id="new-contact-modal" class="modal modal-lg create-contact-modal modal-hero" :class="{
+              'is-active': newContactModalOpened,
+              '': !newContactModalOpened
+            }">
+              <div @click="toggleNewContactModal()" class="modal-background"></div>
+              <div class="modal-content">
+                <div class="flex-card simple-shadow">
+                  <h2 class="title is-5">Create contact</h2>
+                  <div class="card-body">
+                    <div class="has-text-centered">
+                      <div class="image"> <img src="/img/logo/square-violet.svg" alt=""> </div>
+                      <div class="help-text has-text-centered">Create a new contact by entering its basic details. You will then be able to edit it and to add more detailed informations.</div>
+                      <div class="columns is-multiline">
+                        <div class="column is-6">
+                          <div class="field">
+                            <div class="control has-icons-left">
+                              <input class="input is-medium" type="text" placeholder="First Name"> <span class="icon is-left"> <i class="fa fa-user"></i> </span> </div>
+                          </div>
+                        </div>
+                        <div class="column is-6">
+                          <div class="field">
+                            <div class="control has-icons-left">
+                              <input class="input is-medium" type="text" placeholder="Last Name"> <span class="icon is-left"> <i class="fa fa-user"></i> </span> </div>
+                          </div>
+                        </div>
+                        <div class="column is-6">
+                          <div class="field">
+                            <div class="control has-icons-left">
+                              <input class="input is-medium" type="text" placeholder="Email address"> <span class="icon is-left"> <i class="fa fa-envelope"></i> </span> </div>
+                          </div>
+                        </div>
+                        <div class="column is-6">
+                          <div class="field">
+                            <div class="control has-icons-left">
+                              <input class="input is-medium" type="text" placeholder="Company"> <span class="icon is-left"> <i class="fa fa-building"></i> </span> </div>
+                          </div>
+                        </div>
+                        <div class="column is-6">
+                          <div class="field">
+                            <div class="control has-icons-left">
+                              <input class="input is-medium" type="text" placeholder="Position"> <span class="icon is-left"> <i class="fa fa-briefcase"></i> </span> </div>
+                          </div>
+                        </div>
+                        <div class="column is-6">
+                          <div class="field">
+                            <div class="control has-icons-left">
+                              <input class="input is-medium" type="text" placeholder="Location"> <span class="icon is-left"> <i class="fa fa-map-marker"></i> </span> </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="is-prospect">
+                        <div class="field">
+                          <label class="f-switch is-secondary scale-7">
+                            <input id="prospectSwitch" type="checkbox" class="is-secondary"> <i></i> </label>
+                          <label for="prospectSwitch"><span>is this contact a prospect?</span> </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button @click="toggleNewContactModal()" type="button" class="button modal-dismiss">Cancel</button>
+                    <button type="submit" class="button is-modal">Create Contact</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    {% endblock %}
+</body>
+</html>

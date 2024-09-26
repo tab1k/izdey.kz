@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% block content %}
+
+        <section class="page-title">
+          <div class="auto-container">
+            <div class="title-outer">
+              <h1>Создание услуги</h1>
+              <ul class="page-breadcrumb">
+                <li><a href="{% url 'jobs:home' %}">Главная</a></li>
+                <li>Создание услуги</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="layout-pb-60 border-bottom-none" style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+            <div id="login-modal">
+                <!-- Login Form -->
+                <div class="login-form default-form">
+                  <div class="form-inner">
+
+                    <!--Login Form-->
+                    <form method="post" action="{% url 'jobs:service-create' %}" enctype="multipart/form-data">
+                      {% csrf_token %}
+
+                      <div class="form-group">
+                        <label>Категория:</label>
+                        {{ form.category }}
+                      </div>
+
+                      <div class="form-group">
+                        <label>Определение работы:</label>
+                        {{ form.time_count }}
+                      </div>
+
+                      <div class="form-group">
+                        <label>Название:</label>
+                        {{ form.title }}
+                      </div>
+
+                      <div class="form-group">
+                        <label>Подробнее:</label>
+                        {{ form.description }}
+                      </div>
+
+                      <div class="form-group">
+                        <label>Ключевые моменты:</label>
+                        {{ form.keys_description }}
+                      </div>
+
+                      <div class="form-group">
+                        <label>Умения (Скиллы):</label>
+                        {{ form.skills_description }}
+                      </div>
+
+                      <div class="form-group">
+                        <label>Местоположение:</label>
+                        {{ form.location }}
+                      </div>
+
+                      <div class="form-group">
+                        <label>Дата:</label>
+                        {{ form.date }}
+                      </div>
+
+                      <div class="form-group">
+                        <label>Время:</label>
+                        {{ form.time }}
+                      </div>
+
+                      <div class="form-group">
+                        <label>Сумма за работу:</label>
+                        {{ form.pay_rate }}
+                      </div>
+
+
+                      <div class="form-group">
+                        <button type="submit" class=" align-items-center btn-style-one bg-blue" style="background-color: #34A853;">Создать услугу</button>
+                      </div>
+                    </form>
+
+
+                  </div>
+                </div>
+                <!--End Login Form -->
+              </div>
+            </section>
+
+    {% endblock %}
+</body>
+</html>

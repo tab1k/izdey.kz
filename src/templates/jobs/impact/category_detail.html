@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category.name }}</title>
+</head>
+<body>
+{% block content %}
+
+<div id="apus-main-content">
+    <section class="page-title">
+        <div class="auto-container">
+            <div class="title-outer">
+                <h1>{{ category.name }}</h1>
+                <ul class="page-breadcrumb">
+                    <li><a href="{% url 'jobs:category-list' %}">Категории</a></li>
+                    <li>{{ category.name }}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</div>
+
+<section class="ls-section">
+    <div class="auto-container">
+        <div class="filters-backdrop"></div>
+
+        <div class="row">
+
+            <!-- Filters Column -->
+            <div class="filters-column col-lg-4 col-md-12 col-sm-12">
+                <div class="inner-column">
+
+                    <!-- FORM -->
+                    <form method="get">
+                        {% csrf_token %}
+                        <div class="filters-outer">
+
+                            <!-- Filter Block -->
+                            <div class="filter-block">
+                                <h4>Заголовок</h4>
+                                <div class="form-group">
+                                    {{ filter.form.title }}
+                                    <span class="icon flaticon-search-3"></span>
+                                </div>
+                            </div>
+
+                            <!-- Filter Block -->
+                            <div class="filter-block">
+                                <h4>Местоположение</h4>
+                                <div class="form-group">
+                                    {{ filter.form.location }}
+                                    <span class="icon flaticon-map-locator"></span>
+                                </div>
+                            </div>
+
+                            <!-- Filter Block -->
+                            <div class="d-flex">
+                                <div class="filter-block">
+                                    <h4>От</h4>
+                                    <div class="form-group">
+                                        {{ filter.form.date_posted__gte }}
+                                    </div>
+                                </div>
+
+                                <!-- Filter Block -->
+                                <div class="filter-block">
+                                    <h4>До</h4>
+                                    <div class="form-group">
+                                        {{ filter.form.date_posted__lte }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <style>
+                                .d-flex {
+                                    display: flex;
+                                    flex-wrap: wrap; /* Позволяет элементам переноситься на следующую строку, если не хватает места */
+                                    gap: 10px; /* Отступ между блоками */
+                                }
+
+                                .filter-block {
+                                    flex: 1 1 auto; /* Элементы будут занимать доступное пространство */
+                                    min-width: 150px; /* Минимальная ширина блоков для лучшего управления макетом */
+                                }
+
+                                .form-group {
+                                    margin: 0; /* Убираем отступы вокруг формы */
+                                }
+
+                            </style>
+
+
+                            <!-- Filter Block -->
+                            <div class="filter-block">
+                                <h4>Оплата от</h4>
+                                <div class="form-group">
+                                    {{ filter.form.pay_rate__gte }}
+                                    <span class="icon flaticon-briefcase"></span>
+                                </div>
+                            </div>
+
+                            <!-- Filter Block -->
+                            <div class="filter-block">
+                                <h4>Оплата До</h4>
+                                <div class="form-group">
+                                    {{ filter.form.pay_rate__lte }}
+                                    <span class="icon flaticon-briefcase"></span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="theme-btn btn-style-one mb-4"
+                                    style="background-color: #34A853;">Применить
+                            </button>
+
+                        </div>
+                    </form>
+                    <!-- END FORM -->
+
+                </div>
+            </div>
+
+            <!-- Content Column -->
+            <div class="content-column col-lg-8 col-md-12 col-sm-12">
+                <div class="ls-outer">
+
+                    <!-- ls Switcher -->
+                    <div class="ls-switcher">
+                        <div class="showing-result">
+                            <div class="text">Показано <strong>{{ jobs.count }}</strong> результатов.</div>
+                        </div>
+
+                    </div>
+
+                    <!-- Job Block -->
+                    {% for j in jobs %}
+                    <div class="job-block">
+                        <div class="inner-box">
+                            <div class="content">
+                                <span class="company-logo">
+                                  {% if j.employer.profile.image %}
+                                  <a href="{% url 'jobs:vacancy-detail' pk=j.pk %}">
+                                    <img style="border-radius: 5px;" src="{{ j.employer.profile.image.url }}" alt="">
+                                  </a>
+                                  {% else %}
+                                  <a href="{% url 'jobs:vacancy-detail' pk=j.pk %}">
+                                    <img style="border-radius: 5px;" src="{% static 'images/favicon.png' %}" alt="">
+                                  </a>
+                                  {% endif %}
+                                </span>
+
+                                <h4><a href="{% url 'jobs:vacancy-detail' pk=j.pk %}">{{ j.title }}</a></h4>
+                                <ul class="job-info">
+                                    {% if j.employer.profile.company_profile %}
+                                    <li><span class="icon flaticon-briefcase"></span>{{ j.employer.profile.company_profile.name }}
+                                    </li>
+                                    {% endif %}
+                                    <li><span class="icon flaticon-map-locator"></span> {{ j.get_location_display }}
+                                    </li>
+                                    <li><span class="icon flaticon-clock-3"></span> {{ j.date_posted|date:"d.m.Y" }}
+                                    </li>
+                                    <li><span class="icon flaticon-money"></span> {{ j.pay_rate }} тенге</li>
+                                </ul>
+                                <ul class="job-other-info">
+                                    <li class="time" style="background: rgba(52, 168, 83, 0.15);"><a style="color: #34A853;">{{ j.get_time_count_display }}</a></li>
+                                </ul>
+                                <form action="{% url 'jobs:add_to_favorites' job_id=j.pk %}" method="post">
+                                    {% csrf_token %}
+                                    {% if j.favorite %}
+                                    <button type="submit" class="bookmark-btn"><span class="icon la la-heart-o"></span>
+                                    </button>
+                                    {% else %}
+                                    <button type="submit" class="bookmark-btn"><span class="icon la la-heart"></span>
+                                    </button>
+                                    {% endif %}
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Listing Show More -->
+                    <nav class="ls-pagination">
+                        <ul>
+                            {% if page_obj.has_previous %}
+                            <li class="prev">
+                                <a href="?page={{ page_obj.previous_page_number }}&location={{ request.GET.location }}">
+                                    <i class="fa fa-arrow-left"></i>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="prev disabled">
+                                <a href="#">
+                                    <i class="fa fa-arrow-left"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                            <li><a href="#" class="current-page" style="background-color: #34A853;">{{ num }}</a></li>
+                            {% else %}
+                            <li>
+                                <a href="?page={{ num }}&location={{ request.GET.location }}">{{ num }}</a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <li class="next">
+                                <a href="?page={{ page_obj.next_page_number }}&location={{ request.GET.location }}">
+                                    <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="next disabled">
+                                <a href="#">
+                                    <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+</body>
+</html>

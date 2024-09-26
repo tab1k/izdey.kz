@@ -1,0 +1,72 @@
+{% extends 'admin_app/base.html' %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% block content %}
+        <div id="dashboard-wrapper" class="dashboard-outer" x-data="initContactGrid()">
+          <div class="dashboard-inner">
+            <!-- Dashboard Wrapper -->
+            <div class="dashboard-wrapper">
+              <div id="main-dashboard" class="section-wrapper">
+                <!-- Dashboard content -->
+                <div class="dashboard-columns">
+                  <!-- Page title -->
+                  <div class="contacts-title-wrapper">
+                    <h3 class="contacts-title">Компании</h3>
+                    <!-- Filter input -->
+                    <div class="list-filter">
+                      <div class="control has-icon b-hidden-mobile">
+                        <input class="input" type="text" placeholder="Filter Contacts">
+                        <div class="form-icon">
+                          <iconify-icon class="iconify" icon="lucide:filter"></iconify-icon>
+                        </div>
+                      </div>
+                      <!-- Add contact button -->
+                      <a href="{% url 'admin_app:company_create' %}" class="button is-secondary is-raised is-long-1"> <span class="icon is-small"> <i class="fas fa-plus"></i> </span> <span>Создать компанию</span> </a>
+                    </div>
+                  </div>
+                  <!-- Contacts grid -->
+                  <div class="columns is-multiline is-contacts-grid">
+                    {% for c in companies %}
+                    <div class="column is-4">
+                      <div class="contact-card">
+                        <!-- Progress bar -->
+                        <div class="progress-block">
+                          <progress class="progress is-xs is-mid" value="30" max="100"> 30% </progress>
+                          <div class="task-count"> <span class="sl icon-pencil"></span> <span>30%</span> </div>
+                        </div>
+                        <!-- Contact info -->
+                        <div class="contact-block">
+                          <a href="{% url 'admin_app:companies_detail' pk=c.pk %}">
+                          {% if c.logo %}
+                          <img src="{{ c.logo.url }}" alt="">
+                          {% else %}
+                          <img src="{% static 'images/favicon.png' %}" alt="">
+                          {% endif %}
+                          </a>
+                          <div class="contact-meta">
+                            <span class="name"><a href="{% url 'admin_app:companies_detail' pk=c.pk %}">{{ c.name }}</a></span>
+                            <span class="position">{{ c.BIN }}</span>
+                            <span class="email">{{ c.email }}</span>
+                          </div>
+                        </div>
+                        <div class="contact-actions">
+                          <small class="tag is-curved">{{ c.registration_date }}</small>
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    {% endblock %}
+</body>
+</html>

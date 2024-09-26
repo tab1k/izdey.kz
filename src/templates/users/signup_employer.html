@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="layout-pb-60 border-bottom-none" style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+        <div id="login-modal" style="width: 600px;">
+            <!-- Login Form -->
+            <div class="login-form default-form">
+              <div class="form-inner">
+                <h3>Заявка на сотрудничество</h3>
+
+                <!--Login Form-->
+                <form method="post" action="{% url 'users:employer_request' %}" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {{ form.non_field_errors }}
+
+                  <div class="form-group">
+                    <label>Имя:</label>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                    <div class="alert alert-danger">
+                      {{ form.first_name.errors }}
+                    </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group">
+                    <label>Фамилия:</label>
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}
+                    <div class="alert alert-danger">
+                      {{ form.last_name.errors }}
+                    </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group">
+                    <label>Компания:</label>
+                    {{ form.company_name }}
+                    {% if form.company_name.errors %}
+                    <div class="alert alert-danger">
+                      {{ form.company_name.errors }}
+                    </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group">
+                    <label>Документ:</label>
+                    {{ form.document }}
+                    {% if form.document.errors %}
+                    <div class="alert alert-danger">
+                      {{ form.document.errors }}
+                    </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group">
+                    <label>Номер телефона:</label>
+                    {{ form.phone_number }}
+                    {% if form.phone_number.errors %}
+                    <div class="alert alert-danger">
+                      {{ form.phone_number.errors }}
+                    </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group">
+                    <label>Website:</label>
+                    {{ form.website }}
+                    {% if form.website.errors %}
+                    <div class="alert alert-danger">
+                      {{ form.website.errors }}
+                    </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group">
+                    <button class="theme-btn btn-style-one" style="background-color: #34A853;" type="submit" name="Register">Зарегистрироваться</button>
+                  </div>
+                </form>
+
+
+              </div>
+            </div>
+            <!--End Login Form -->
+          </div>
+    </section>
+{% endblock %}
+
+

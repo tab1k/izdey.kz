@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+<!doctype html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+{% block content %}
+<div class="jobDetails-section bg-default-1 pt-30 pt-lg-27 pb-xl-25 pb-12" style="min-height: 700px; align-items: center;">
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <!-- back Button End -->
+            <div class="mt-5 mb-5 w-75">
+                <div class="text-center">
+                    <img src="{% static 'images/error404.webp' %}" style="height: 250px;">
+                </div>
+                <div class="text-center mt-5">
+                    <h3 class="mb-2" style="color: green;">Ошибка 404!</h3>
+                    <h4>Что-то произошло не так!</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>

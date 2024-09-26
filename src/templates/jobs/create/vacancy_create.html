@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+
+<section class="page-title">
+    <div class="auto-container">
+        <div class="title-outer">
+            <h1>Создание вакансии</h1>
+            <ul class="page-breadcrumb">
+                <li><a href="{% url 'jobs:home' %}">Главная</a></li>
+                <li>Создание вакансии</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="layout-pb-60 border-bottom-none"
+         style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+    <div id="login-modal">
+        <!-- Login Form -->
+        <div class="login-form default-form">
+            <div class="form-inner">
+
+                <!--Login Form-->
+                <form method="post" action="{% url 'jobs:vacancy-create' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Отображение общих ошибок формы -->
+                    {% if form.errors %}
+                    <div class="form-errors">
+                        <ul>
+                            {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                            {% for field in form %}
+                            {% for error in field.errors %}
+                            <li>{{ field.label }}: {{ error }}</li>
+                            {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label>Категория:</label>
+                        {{ form.category }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Название:</label>
+                        {{ form.title }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Подробнее:</label>
+                        {{ form.description }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ключевые моменты:</label>
+                        {{ form.keys_description }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Умения (Скиллы):</label>
+                        {{ form.skills_description }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Местоположение:</label>
+                        {{ form.location }}
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Оплата:</label>
+                        {{ form.pay_rate }}
+                    </div>
+
+                    <!-- Скрытые поля для даты и времени -->
+                    <input type="hidden" name="date" value="{{ today_date }}">
+                    <input type="hidden" name="time" value="{{ now_time }}">
+
+                    <div class="form-group">
+                        <button type="submit" class="align-items-center btn-style-one bg-blue"
+                                style="background-color: #34A853;">Создать вакансию
+                        </button>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+        <!--End Login Form -->
+    </div>
+</section>
+
+{% endblock %}
+</body>
+</html>

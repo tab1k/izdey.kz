@@ -1,0 +1,399 @@
+{% extends 'base.html' %}
+<!doctype html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<section class="container-fluid mt-3">
+    <div class="auto-container">
+        <div class="col-md-12">
+            <div class="">
+                <a href="#">
+                    <img style="border-radius: 15px;" src="{% static 'images/yandex-banner.png' %}" class="card-img-top"
+                     alt="banner-0">
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% else %}
+<section class="container-fluid mt-3">
+    <div class="auto-container">
+        <div class="col-md-12">
+            <div class="">
+                <a href="#">
+                    <img style="border-radius: 15px;" src="{% static 'images/banner.png' %}" class="card-img-top"
+                     alt="banner-0">
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="job-categories" style="padding-top: 25px; padding-bottom: 10px;">
+    <div class="auto-container">
+        <div class="row wow fadeInUp animated">
+            <div class="category-block-two at-home20">
+                <div class="inner-box">
+                    <div class="content">
+                        <a href="{% url 'jobs:category-list' %}">
+                            <span class="icon"><i style="color: #03b003;" class="fi fi-rr-list-check"></i></span>
+                        </a>
+                        <h4><a href="#">Категории</a></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="category-block-two at-home20">
+                <div class="inner-box">
+                    <div class="content">
+                        <a href="{% url 'jobs:vacancy-list' %}">
+                            <span class="icon"><i style="color: #03b003;"  class="fi fi-rr-briefcase"></i></span>
+                        </a>
+                        <h4><a href="#">Вакансии</a></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="category-block-two at-home20">
+                <div class="inner-box">
+                    <div class="content">
+                        <a href="{% url 'jobs:service-list' %}">
+                            <span class="icon"><i style="color: #03b003;"  class="fi fi-rr-users"></i></span>
+                        </a>
+                        <h4><a href="#">Услуги</a></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="category-block-two at-home20">
+                <div class="inner-box">
+                    <div class="content">
+                        <a href="{% url 'rooms:room-list' %}">
+                            <span class="icon"><i style="color: #03b003;"  class="fi fi-rr-volume"></i></span>
+                        </a>
+                        <h4><a href="#">Комнаты</a></h4>
+                    </div>
+                </div>
+            </div>
+            <style>
+                .category-block-two.at-home20:hover .inner-box {
+                    background: #1eb81e;
+                    box-shadow: 0px 6px 15px 0px rgba(64, 79, 104, 0.05);
+                }
+            </style>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Основные стили для карточек */
+    .category-block-two {
+        margin-bottom: 30px; /* Отступ снизу между карточками */
+    }
+
+    .category-block-two .inner-box {
+        padding: 15px; /* Внутренние отступы */
+        background: #f8f9fa; /* Цвет фона для карточек */
+        border-radius: 5px; /* Скругление углов */
+        text-align: center; /* Центрирование текста */
+    }
+
+    /* Адаптивные стили */
+    @media (max-width: 767px) {
+        .category-block-two {
+            flex: 0 0 50%; /* Занимает 50% ширины экрана на мобильных устройствах */
+            max-width: 50%; /* Ограничение ширины до 50% */
+        }
+
+        .category-block-two a {
+            display: block; /* Сделать ссылки блочными, чтобы текст и иконки располагались вертикально */
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 991px) {
+        .category-block-two {
+            flex: 0 0 33.33%; /* Занимает 33.33% ширины экрана на устройствах среднего размера */
+            max-width: 33.33%; /* Ограничение ширины до 33.33% */
+        }
+    }
+
+    /* Стили для десктопа */
+    .category-block-two {
+        flex: 0 0 50%; /* Занимает 25% ширины экрана на десктопе */
+        max-width: 50%; /* Ограничение ширины до 25% */
+    }
+
+</style>
+
+
+<section class="ls-section" style="border: none;">
+    <div class="auto-container">
+        <div class="filters-backdrop"></div>
+
+        <div class="row">
+
+            <!-- Filters Column -->
+            <div class="filters-column col-lg-4 col-md-12 col-sm-12 d-none d-md-block">
+                <div class="inner-column">
+                    <!-- FORM -->
+                    <form method="get" action="">
+                        {% csrf_token %}
+                        <div class="filters-outer">
+                            <div class="filter-block">
+                                <h4>Категории</h4>
+                                <div class="form-group">
+                                    {{ filter.form.category }}
+                                </div>
+                            </div>
+
+                            <!-- Filter Block -->
+                            <div class="filter-block">
+                                <h4>Заголовок</h4>
+                                <div class="form-group">
+                                    {{ filter.form.title }}
+                                </div>
+                            </div>
+
+                            <!-- Filter Block -->
+                            <div class="filter-block">
+                                <h4>Местоположение</h4>
+                                <div class="form-group">
+                                    {{ filter.form.location }}
+                                </div>
+                            </div>
+
+                            <!-- Filter Block -->
+                            <div class="filter-block">
+                                <h4>От</h4>
+                                <div class="form-group">
+                                    {{ filter.form.date_posted__gte }}
+                                </div>
+                            </div>
+
+                            <div class="filter-block">
+                                <h4>До</h4>
+                                <div class="form-group">
+                                    {{ filter.form.date_posted__lte }}
+                                </div>
+                            </div>
+
+                            <div class="filter-block">
+                                <h4>Оплата от</h4>
+                                <div class="form-group">
+                                    {{ filter.form.pay_rate__gte }}
+                                </div>
+                            </div>
+
+                            <div class="filter-block">
+                                <h4>Оплата До</h4>
+                                <div class="form-group">
+                                    {{ filter.form.pay_rate__lte }}
+                                </div>
+                            </div>
+
+                            <button type="submit" class="theme-btn btn-style-one bg-blue mb-4">Применить</button>
+                        </div>
+                    </form>
+                    <!-- END FORM -->
+
+                    <!-- Call To Action -->
+                    {% if user.is_authenticated %}
+                    {% else %}
+                    <div class="call-to-action-four">
+                        <h5>Рекрутор?</h5>
+                        <p>Рекламируйте свои вакансии миллионам пользователей ежемесячно и находите миллионы резюме в
+                            нашей базе данных.</p>
+                        <a href="{% url 'users:employer_request' %}" class="theme-btn btn-style-one bg-blue"><span
+                                class="btn-title">Начни сейчас</span></a>
+                        <div class="image" style="background-image: url({% static 'images/image-1.png' %});"></div>
+                    </div>
+                    {% endif %}
+                    <!-- End Call To Action -->
+                </div>
+            </div>
+            <style>
+                /* Скрыть элемент на мобильных устройствах и показать на экранах medium и выше */
+                @media (max-width: 767px) {
+                    .filters-column {
+                        display: none;
+                    }
+                }
+
+            </style>
+
+
+            <!-- Content Column -->
+            <div class="content-column col-lg-8 col-md-12 col-sm-12">
+                <div class="ls-outer">
+
+                    <!-- ls Switcher -->
+                    <div class="ls-switcher">
+                        <div class="showing-result">
+                            <div class="text">Показано <strong>{{ filter.qs.count }}</strong> результатов.</div>
+                        </div>
+                    </div>
+
+
+                    {% for j in jobs %}
+                    <div class="job-block">
+                        <div class="inner-box">
+                            <div class="content">
+
+                                <span class="company-logo">
+                                  {% if j.employer.profile.company_profile and j.employer.profile.company_profile.logo %}
+                                    <a href="{% url 'jobs:vacancy-detail' pk=j.pk %}">
+                                      <img style="border-radius: 5px;" src="{{ j.employer.profile.company_profile.logo.url }}"
+                                           alt="">
+                                    </a>
+                                  {% else %}
+                                    <a href="{% url 'jobs:vacancy-detail' pk=j.pk %}">
+                                      <img style="border-radius: 5px;" src="{% static 'images/favicon.png' %}" alt="">
+                                    </a>
+                                  {% endif %}
+                                </span>
+
+                                <h4><a href="{% url 'jobs:vacancy-detail' pk=j.pk %}">{{ j.title }}</a></h4>
+                                <ul class="job-info">
+                                    {% if j.employer.profile.company_profile %}
+                                    <li><span class="icon flaticon-briefcase"></span>{{ j.employer.profile.company_profile.name }}
+                                    </li>
+                                    {% endif %}
+                                    <li><span class="icon flaticon-map-locator"></span> {{ j.get_location_display }}
+                                    </li>
+                                    <li><span class="icon flaticon-clock-3"></span> {{ j.date }}</li>
+                                    <li><span class="icon flaticon-money"></span> {{ j.pay_rate }} тенге</li>
+                                </ul>
+                                <ul class="job-other-info">
+                                    {% if j.time_count == 'full' %}
+                                    <li class="privacy" >Полная занятость</li>
+                                    {% elif j.time_count == 'part' %}
+                                    <li class="time">Договорная занятость</li>
+                                    {% else %}
+                                    <li class="required">Единоразовая услуга</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            <form action="{% url 'jobs:add_to_favorites' job_id=j.pk %}" method="post">
+                                {% csrf_token %}
+                                {% if j.favorite %}
+                                <button type="submit" class="bookmark-btn"><span class="icon la la-heart-o"></span>
+                                </button>
+                                {% else %}
+                                <button type="submit" class="bookmark-btn"><span class="icon la la-heart"></span>
+                                </button>
+                                {% endif %}
+                            </form>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+
+                <!-- Listing Show More -->
+                <nav class="ls-pagination">
+                    <ul>
+                        {% if page_obj.has_previous %}
+                        <li class="prev">
+                            <a href="?page={{ page_obj.previous_page_number }}&location={{ request.GET.location }}">
+                                <i class="fa fa-arrow-left"></i>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="prev disabled">
+                            <a href="#">
+                                <i class="fa fa-arrow-left"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                        <li><a href="#" class="current-page" style="background-color: #34A853;">{{ num }}</a></li>
+                        {% else %}
+                        <li>
+                            <a href="?page={{ num }}&location={{ request.GET.location }}">{{ num }}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                        <li class="next">
+                            <a href="?page={{ page_obj.next_page_number }}&location={{ request.GET.location }}">
+                                <i class="fa fa-arrow-right"></i>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="next disabled">
+                            <a href="#">
+                                <i class="fa fa-arrow-right"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+<section class="app-section" style="margin-top: 0px; padding-top: 5px;">
+    <div class="auto-container">
+        <div class="row">
+            <!-- Image Column -->
+            <div class="image-column col-lg-6 col-md-12 col-sm-12">
+                <div class="bg-shape"></div>
+                <figure class="image wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                    <img style="" src="{% static 'images/laptopmob.png' %}" alt=""></figure>
+            </div>
+
+            <div class="content-column col-lg-6 col-md-12 col-sm-12">
+                <div class="inner-column wow fadeInRight animated"
+                     style="visibility: visible; animation-name: fadeInRight;">
+                    <div class="sec-title">
+                        <span class="sub-title" style="color: green;">CКАЧАЙ &amp; ПОЛЬЗУЙСЯ</span>
+                        <h2>Скоро!<br> на всех площадках 📱</h2>
+                        <div class="text">Просмотрите миллионы вакансий и найдите подходящую.</div>
+                    </div>
+                    <!--                  <div class="download-btn">-->
+                    <!--                    <a href="#"><img src="images/icons/apple.png" alt=""></a>-->
+                    <!--                    <a href="#"><img src="images/icons/google.png" alt=""></a>-->
+                    <!--                  </div>-->
+                </div>
+            </div>
+            <style>
+                .inner-column.wow.fadeInRight.animated {
+                    padding-bottom: 0px;
+                }
+            </style>
+        </div>
+    </div>
+</section>
+
+<div id="cityModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeCityModal()">&times;</span>
+        <h3>Выберите город</h3>
+        <p>Текущий город: <span id="currentCity">{{ request.user.profile.get_location }}</span></p>
+        <ul class="city-list">
+            {% for code, name in location_choices %}
+            <li><a href="#" onclick="updateLocation('{{ code }}')">{{ name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endblock %}
+</body>
+</html>

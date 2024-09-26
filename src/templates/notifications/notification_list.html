@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="cart-section" style="padding: 10px 0px 50px;">
+      <div class="auto-container">
+
+        <div class="row">
+          <div class="col-lg-12">
+            <!-- Chat Widget -->
+            <div class="chat-widget">
+              <div class="widget-content">
+                <div class="row">
+                  <div class="contacts_column col-xl-4 col-lg-5 col-md-12 col-sm-12 chat" id="chat_contacts">
+                    <div class="card contacts_card">
+                      <div class="card-header">
+                        <div class="search-box-one">
+                          <form method="post" action="#">
+                            <div class="form-group">
+                              <span class="icon flaticon-search-1"></span>
+                              <input type="search" name="search-field" value="" placeholder="Искать..." required="">
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+
+                      <div class="card-body contacts_body" style="overflow-y: scroll;">
+                        <ul class="contacts">
+                          <li class="active">
+                            <a href="#">
+                              <div class="d-flex bd-highlight">
+                                <div class="img_cont">
+                                  <img src="{% static 'images/favicon.png' %}" class="rounded-circle user_img" alt="">
+                                </div>
+                                <div class="user_info">
+                                  <span>IZDEY.kz</span>
+                                  <p> БОТ</p>
+                                </div>
+                                <span class="info">35 mins</span>
+                              </div>
+                            </a>
+                          </li>
+                          <li class="">
+                            <a href="#">
+                              <div class="d-flex bd-highlight">
+                                <div class="img_cont">
+                                  <img src="{% static 'images/iska.jpeg' %}" class="rounded-circle user_img" alt="">
+                                </div>
+                                <div class="user_info">
+                                  <span>Ескендiр Сансызбай</span>
+                                  <p>Co-Founder</p>
+                                </div>
+                                <span class="info">Онлайн</span>
+                              </div>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class=" col-xl-8 col-lg-7 col-md-12 col-sm-12 chat">
+                    <div class="card message-card">
+                      <div class="card-header msg_head">
+                        <div class="d-flex bd-highlight">
+                          <div class="img_cont">
+                            <img src="{% static 'images/favicon.png' %}" alt="" class="rounded-circle user_img">
+                          </div>
+                          <div class="user_info">
+                            <span>IZDEY.kz</span>
+                            <p>БОТ</p>
+                          </div>
+                        </div>
+
+                        <div class="btn-box">
+                            <button id="delete-notifications-btn" class="dlt-chat">Очистить переписку</button>
+                            <button class="toggle-contact"><span class="fa fa-bars"></span></button>
+                        </div>
+
+                        <script>
+                        document.getElementById('delete-notifications-btn').addEventListener('click', function() {
+                            fetch('{% url 'notifications:delete_all_notifications' %}', {
+                                method: 'POST',
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'X-CSRFToken': '{{ csrf_token }}',
+                                },
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.message) {
+                                    // Обновите страницу или уведомите пользователя об успешном удалении
+                                    location.reload(); // Перезагрузка страницы
+                                } else {
+                                    // Обработка ошибок
+                                    console.error(data.error);
+                                }
+                            });
+                        });
+                        </script>
+
+                      </div>
+
+                      <div class="card-body msg_card_body">
+                        {% for notification in notifications %}
+                        <div class="d-flex justify-content-start mb-2">
+                          <div class="img_cont_msg">
+                            <img src="{% static 'images/favicon.png' %}" alt="" class="rounded-circle user_img_msg">
+                            <div class="name">IZDEY.kz <span class="msg_time">{{ notification.timestamp }}</span></div>
+                          </div>
+                          <div class="msg_cotainer">
+                            {{ notification.message }}
+                          </div>
+                        </div>
+                        {% endfor %}
+
+                        <div class="d-flex justify-content-end mb-2 reply">
+                          <div class="img_cont_msg">
+                            {% if user.is_authenticated %}
+                              {% if user.profile.image%}
+                              <img src="{{ user.profile.image.url }}" alt="" class="rounded-circle user_img_msg">
+                              {% else %}
+                              <img src="{% static 'images/favicon.png' %}" alt="" class="rounded-circle user_img_msg">
+                              {% endif %}
+                            {% endif %}
+                            <div class="name">Вы <span class="msg_time"></span></div>
+                          </div>
+                          <div class="msg_cotainer">
+                            Привет! Пока разработчики работают над чатом...
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="card-footer">
+                        <div class="form-group mb-0">
+                          <textarea class="form-control type_msg" placeholder="Сообщение..."></textarea>
+                          <button type="button" class="theme-btn btn-style-one submit-btn">Отправить</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}
+
+

@@ -1,0 +1,231 @@
+{% extends 'admin_app/base.html' %}
+{% load static %}
+
+
+  {% block content %}
+  <div id="dashboard-wrapper" class="dashboard-outer">
+    <div class="dashboard-inner">
+      <div class="dashboard-wrapper">
+        <div id="main-dashboard" class="section-wrapper">
+          <!-- Dashboard content -->
+          <div class="dashboard-columns">
+            <div class="columns is-multiline">
+              <!--Left-->
+              <div class="column">
+                <!--Menu-->
+                <div class="feed-channels">
+                  <a href="{% url 'admin_app:rooms' %}" class="card-heading h3" style="margin-bottom: 15px;">Голосовые комнаты</a>
+
+                  <div class="menu-items">
+
+                    {% for r in rooms %}
+                      <a href="{% url 'admin_app:rooms_detail' pk=r.pk %}" class="menu-item">
+                        <i class="im icon-Megaphone"></i>
+                        <div class="meta"> <span>{{ r.name }}</span> <span>{{ r.time_start }} | {{ r.speaker }}</span> </div>
+                      </a>
+                    {% endfor %}
+
+                  </div>
+                </div>
+                <!--Illustration card-->
+                <div class="flex-card p-4">
+                  <div class="card-head pt-4 px-4">
+                    <h3>Заявки</h3>
+                    <a href="{% url 'admin_app:employer-requests' %}" class="button is-default is-rounded">Посмотреть</a>
+                  </div>
+                  <ul class="user-list p-4">
+                    {% for r in request %}
+                    <li>
+                      <div class="user-list-avatar">
+                        <img src="{% static 'images/favicon.png' %}" style="border: 1px dotted gray;">
+                      </div>
+                      <div class="user-list-info">
+                        <div class="name">
+                          <a href="{% url 'admin_app:employer_detail' pk=r.pk %}" style="color: black;">{{ r.first_name }} {{ r.last_name }}</a>
+                        </div>
+                        <div class="position">{{ r.company_name }}</div>
+                      </div>
+                      <div class="user-list-status is-online"></div>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                <!-- Widget -->
+                <div class="widget list-widget py-2 px-4">
+                  <div class="card-head p-4 is-spaced">
+                    <h3>Trending</h3>
+                    <!--Dropdown-->
+                    <div x-ref="menu5" @click.away="$refs.menu5.classList.remove('is-active')" class="dropdown is-right dropdown-trigger styled-dropdown is-round">
+                      <div @click="$refs.menu5.classList.add('is-active')" class="button">
+                        <i class="material-icons">more_vert</i>
+                      </div>
+                      <div class="dropdown-menu is-text-bigger" role="menu">
+                        <div class="dropdown-content">
+                          <a class="dropdown-item">
+                            <i class="sl icon-refresh"></i>
+                            <span>
+                              <span>Reload</span>
+                              <span>Reload widget data</span>
+                            </span>
+                          </a>
+                          <a href="#" class="dropdown-item">
+                            <i class="sl icon-pencil"></i>
+                            <span>
+                              <span>Settings</span>
+                              <span>Edit widget settings</span>
+                            </span>
+                          </a>
+                          <div class="dropdown-divider"></div>
+                          <a href="#" class="dropdown-item">
+                            <i class="sl icon-bell"></i>
+                            <span>
+                              <span>Notifications</span>
+                              <span>Notify me of changes</span>
+                            </span>
+                          </a>
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item">
+                            <i class="sl icon-trash"></i>
+                            <span>
+                              <span>Delete</span>
+                              <span>Delete this widget</span>
+                            </span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <ul class="inner-list is-clean">
+                    <li>
+                      <div class="list-item-data">
+                        <img class="small-avatar" src="{% static 'admin_panel/images/airbnb.svg' %}" alt="">
+                        <div class="item-info">
+                          <span class="item-title">Airbnb</span>
+                          <span>24k followers</span>
+                        </div>
+                      </div>
+                      <div class="item-action">
+                        <a class="button">View</a>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="list-item-data">
+                        <img class="small-avatar" src="{% static 'admin_panel/images/alfresco.svg' %}" alt="">
+                        <div class="item-info">
+                          <span class="item-title">Alfresco</span>
+                          <span>21k followers</span>
+                        </div>
+                      </div>
+                      <div class="item-action">
+                        <a class="button">View</a>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="list-item-data">
+                        <img class="small-avatar" src="{% static 'admin_panel/images/amazon.svg' %}" alt="">
+                        <div class="item-info">
+                          <span class="item-title">Amazon</span>
+                          <span>19k followers</span>
+                        </div>
+                      </div>
+                      <div class="item-action">
+                        <a class="button">View</a>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="list-item-data">
+                        <img class="small-avatar" src="{% static 'admin_panel/images/tesla.svg' %}" alt="">
+                        <div class="item-info">
+                          <span class="item-title">Tesla</span>
+                          <span>16k followers</span>
+                        </div>
+                      </div>
+                      <div class="item-action">
+                        <a class="button">View</a>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="list-item-data">
+                        <img class="small-avatar" src="{% static 'admin_panel/images/hm.svg' %}" alt="">
+                        <div class="item-info">
+                          <span class="item-title">H&amp;M</span>
+                          <span>9k followers</span>
+                        </div>
+                      </div>
+                      <div class="item-action">
+                        <a class="button">View</a>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+
+              <div class="column">
+                <div class="flex-card p-4">
+                  <div class="card-head pt-4 px-4">
+                    <h3>Пользователи</h3>
+                    <a href="{% url 'admin_app:users' %}" class="button is-default is-rounded">Посмотреть</a>
+                  </div>
+                  <ul class="user-list p-4">
+                    {% for u in users%}
+                    <li>
+                      <div class="user-list-avatar">
+                        {% if u.profile.image %}
+                        <img src="{{ u.profile.image.url }}" alt="">
+                        {% else %}
+                        <img src="{% static 'images/favicon.png' %}">
+                        {% endif %}
+                      </div>
+                      <div class="user-list-info">
+                        <div class="name">{% if u.first_name and u.last_name %}
+                            <a href="{% url 'admin_app:users_detail' pk=u.pk %}">{{ u.first_name }} {{ u.last_name }}</a>
+                        {% else %}
+                            <a href="{% url 'admin_app:users_detail' pk=u.pk %}">{% if u.username %}{{ u.username }}{%else%} Администратор {% endif%}</>
+                        {% endif %}
+                        </div>
+                        {% if u.is_staff %}
+                        <div class="position">Staff</div>
+                        {% else %}
+                        <div class="position">{{ u.profile.get_account_type_display }}</div>
+                        {% endif %}
+                      </div>
+                      {% if u.is_staff %}
+                      <div class="user-list-status is-online"></div>
+                      {% endif %}
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                <div class="flex-card p-4">
+                  <div class="card-head pt-4 px-4">
+                    <h3>Компании</h3>
+                    <a href="{% url 'admin_app:companies' %}" class="button is-default is-rounded">Посмотреть</a>
+                  </div>
+                  <ul class="user-list p-4">
+                    {% for c in companies %}
+                    <li>
+                      <div class="user-list-avatar">
+                        {% if c.logo %}
+                          <img src="{{ c.logo.url }}" alt="">
+                        {% else %}
+                          <img src="{% static 'admin_panel/images/terry.jpg' %}" alt="">
+                        {% endif %}
+                      </div>
+                      <div class="user-list-info">
+                        <div class="name"><a href="{% url 'admin_app:companies_detail' pk=c.pk %}">{{ c.name }}</a></div>
+                        <div class="position"><a href="#">{{ c.user.first_name }} {{ c.user.last_name }}</a></div>
+                      </div>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}

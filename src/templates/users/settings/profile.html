@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+<!doctype html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+{% block content %}
+
+<section class="ls-section" style="border: none; padding-top: 20px;">
+
+    <div class="auto-container">
+
+        <div class="container text-center">
+            <a href="#">
+                {% if user.profile.image %}
+                <div style="margin-bottom: 30px;">
+                    <img style="border-radius: 50%; height: 120px;" src="{{ user.profile.image.url }}" alt="">
+                    <h3 style="color: black; margin-top: 10px;">{{ user.first_name }} {{ user.last_name }}</h3>
+                    <h6 style="color: black; margin-top: 5px;">IZDEY<span style="color: #03b003;">.kz</span></h6>
+                </div>
+                {% else %}
+                <img style="border-radius: 50%; height: 120px;" src="{% static 'images/favicon.png' %}" alt="">
+                {% endif %}
+            </a>
+        </div>
+
+        <div class="job-block izdey mt-3 mb-3" style="background-color: #fff; border-radius: 10px; justify-content: center; ">
+            <div class="inner-box">
+                <div class="container">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <!-- Мой профиль -->
+                        <a style="color: black;" href="{% url 'myaccount:responses' %}">
+                            <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0;">
+                                <div style="display: flex; align-items: center;">
+                                    <span class="icon fi fi-rr-envelope-plus"
+                                          style="margin-right: 15px; font-size: 22px; color: #03b003; text-align: center; align-items: center;"></span>
+                                    <span style="font-size: 16px; font-weight: 500;">Отклики</span>
+                                </div>
+                                <span style="color: #333; font-size: 20px;">&rsaquo;</span>
+                            </li>
+                        </a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Добавьте этот CSS в файл стилей -->
+        <style>
+            @media (max-width: 767px) {
+                .izdey {
+                    display: none;
+                }
+            }
+        </style>
+
+        <div class="job-block" style="background-color: #fff; border-radius: 10px;margin: 0 auto; justify-content: center;">
+            <div class="inner-box">
+                <div class="container">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+
+                        <!-- Мой профиль -->
+                        <a style="color: black;" href="{% url 'myaccount:user_data'  %}">
+                            <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                                <div style="display: flex; align-items: center;">
+                            <span class="icon fi fi-rr-id-badge"
+                                  style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                    <span style="font-size: 16px; font-weight: 500;">Мои данные</span>
+                                </div>
+                                <span style="color: #333; font-size: 20px;">&rsaquo;</span>
+                            </li>
+                        </a>
+
+                        <a style="color: black;" href="{% url 'myaccount:user_my_profile' %}">
+                            <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                                <div style="display: flex; align-items: center;">
+                            <span class="icon fi fi-rr-mode-portrait"
+                                  style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                    <span style="font-size: 16px; font-weight: 500;">Мой профиль</span>
+                                </div>
+                                <span style="color: #333; font-size: 20px;">&rsaquo;</span>
+                            </li>
+                        </a>
+
+                        {% if user.profile.company_profile %}
+                        <a style="color: black;" href="{% url 'myaccount:user_company' %}">
+                            <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0;">
+                                <div style="display: flex; align-items: center;">
+                            <span class="icon fi fi-rr-home-location"
+                                  style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                    <span style="font-size: 16px; font-weight: 500;">Моя компания</span>
+                                </div>
+                                <span style="color: #333; font-size: 20px;">&rsaquo;</span>
+                            </li>
+                        </a>
+                        {% else %}
+                        {% if resume %}
+                        <a style="color: black;" href="{% url 'myaccount:resume:resume_detail' %}">
+                            <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0;">
+                                <div style="display: flex; align-items: center;">
+                                        <span class="icon fi fi-rr-document"
+                                              style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                    <span style="font-size: 16px; font-weight: 500;">Мое резюме</span>
+                                </div>
+                                <span style="color: #333; font-size: 20px;">&rsaquo;</span>
+                            </li>
+                        </a>
+                        {% else %}
+                        <a style="color: black;" href="{% url 'myaccount:resume:resume_create' %}">
+                            <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0;">
+                                <div style="display: flex; align-items: center;">
+                                        <span class="icon fi fi-rr-document"
+                                              style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                    <span style="font-size: 16px; font-weight: 500;">Создать резюме</span>
+                                </div>
+                                <span style="color: #333; font-size: 20px;">&rsaquo;</span>
+                            </li>
+                        </a>
+                        {% endif %}
+
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="job-block mt-3 desktop-only"
+             style="background-color: #fff; border-radius: 10px;margin: 0 auto; justify-content: center;">
+            <div class="inner-box">
+                <div class="container">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <!-- Мой профиль -->
+                        <a style="color: black;" href="{% url 'jobs:vacancy-create'  %}">
+                            <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                                <div style="display: flex; align-items: center;">
+                            <span class="icon fi fi-rr-briefcase"
+                                  style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                    <span style="font-size: 16px; font-weight: 500;">Создать вакансию</span>
+                                </div>
+                                <span style="color: #333; font-size: 20px;">&rsaquo;</span>
+                            </li>
+                        </a>
+
+                        <a style="color: black;" href="{% url 'jobs:service-create' %}">
+                            <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0;">
+                                <div style="display: flex; align-items: center;">
+                            <span class="icon fi fi-rr-users"
+                                  style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                    <span style="font-size: 16px; font-weight: 500;">Создать услугу</span>
+                                </div>
+                                <span style="color: #333; font-size: 20px;">&rsaquo;</span>
+                            </li>
+                        </a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            /* Скрыть блок на мобильных */
+            @media (max-width: 768px) {
+                .desktop-only {
+                    display: none;
+                }
+            }
+
+            /* Показывать блок на десктопах (экраны >= 768px) */
+            @media (min-width: 768px) {
+                .desktop-only {
+                    display: block;
+                }
+            }
+        </style>
+
+
+        <div class="job-block mt-3" style="background-color: #fff; border-radius: 10px; justify-content: center; ">
+            <div class="inner-box">
+                <div class="container">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <!-- Мой профиль -->
+                        <a style="color: black;" href="{% url 'myaccount:delete_account' %}">
+                            <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0;">
+                                <div style="display: flex; align-items: center;">
+                            <span class="icon fi fi-rr-trash"
+                                  style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                    <span style="font-size: 16px; font-weight: 500;">Удалить аккаунт</span>
+                                </div>
+                                <span style="color: #333; font-size: 20px;">&rsaquo;</span>
+                            </li>
+                        </a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</section>
+
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="page-title">
+    <div class="auto-container">
+        <div class="title-outer">
+            <h1>Услуги</h1>
+            <ul class="page-breadcrumb">
+                <li><a href="/">Главная</a></li>
+                <li>Услуги</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!--End Page Title-->
+
+<!-- Listing Section -->
+<section class="ls-section" style="border: none;">
+    <div class="auto-container">
+        <div class="filters-backdrop"></div>
+
+        <div class="row">
+
+            <!-- Filters Column -->
+            <div class="filters-column col-lg-4 col-md-12 col-sm-12">
+                <div class="inner-column">
+
+                    <!-- FORM -->
+                    <form method="get" action="{% url 'jobs:service-list' %}">
+                        {% csrf_token %}
+                        <div class="filters-outer">
+
+                            <div class="filter-block">
+                                <h4>Категории</h4>
+                                <div class="form-group">
+                                    {{ filter.form.category }}
+                                    <span class="icon flaticon-money-1"></span>
+                                </div>
+                            </div>
+
+                            <!-- Filter Block -->
+                            <div class="filter-block">
+                                <h4>Заголовок</h4>
+                                <div class="form-group">
+                                    {{ filter.form.title }}
+                                    <span class="icon flaticon-search-3"></span>
+                                </div>
+                            </div>
+
+                            <!-- Filter Block -->
+                            <div class="filter-block">
+                                <h4>Местоположение</h4>
+                                <div class="form-group">
+                                    {{ filter.form.location }}
+                                    <span class="icon flaticon-map-locator"></span>
+                                </div>
+                            </div>
+
+                            <!-- Filter Block -->
+                            <div class="filter-block">
+                                <h4>От</h4>
+                                <div class="form-group">
+                                    {{ filter.form.date_posted__gte }}
+                                    <span class="icon flaticon-briefcase"></span>
+                                </div>
+                            </div>
+
+                            <div class="filter-block">
+                                <h4>До</h4>
+                                <div class="form-group">
+                                    {{ filter.form.date_posted__lte }}
+                                    <span class="icon flaticon-briefcase"></span>
+                                </div>
+                            </div>
+
+                            <div class="filter-block">
+                                <h4>Оплата от</h4>
+                                <div class="form-group">
+                                    {{ filter.form.pay_rate__gte }}
+                                    <span class="icon flaticon-briefcase"></span>
+                                </div>
+                            </div>
+
+                            <div class="filter-block">
+                                <h4>Оплата До</h4>
+                                <div class="form-group">
+                                    {{ filter.form.pay_rate__lte }}
+                                    <span class="icon flaticon-briefcase"></span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="theme-btn btn-style-one bg-blue mb-4" style="background-color: #34A853;">Применить</button>
+                        </div>
+                    </form>
+                    <!-- END FORM -->
+
+                </div>
+            </div>
+
+            <!-- Content Column -->
+            <div class="content-column col-lg-8 col-md-12 col-sm-12">
+                <div class="ls-outer">
+                    <button type="button" class="theme-btn btn-style-two toggle-filters">Show Filters</button>
+
+                    <!-- ls Switcher -->
+                    <div class="ls-switcher">
+                        <div class="showing-result">
+                            <div class="text">Показано <strong>{{ services.count }}</strong> результатов.</div>
+                        </div>
+                    </div>
+
+                    {% for s in services %}
+                    <div class="job-block">
+                        <div class="inner-box">
+                            <div class="content">
+
+                                <span class="company-logo">
+                                    {% if s.employer.profile.company_profile and s.employer.profile.company_profile.logo %}
+                                    <a href="{% url 'jobs:service-detail' pk=s.pk %}">
+                                        <img style="border-radius: 5px;" src="{{ s.employer.profile.company_profile.logo.url }}"
+                                             alt="">
+                                    </a>
+                                    {% elif s.employer.profile.image %}
+                                    <a href="{% url 'jobs:service-detail' pk=s.pk %}">
+                                        <img style="border-radius: 5px;" src="{{ s.employer.profile.image.url }}" alt="">
+                                    </a>
+                                    {% else %}
+                                    <a href="{% url 'jobs:service-detail' pk=s.pk %}">
+                                        <img style="border-radius: 5px;" src="{% static 'images/favicon.png' %} " alt="">
+                                    </a>
+                                    {% endif %}
+                                </span>
+
+                                <h4><a href="{% url 'jobs:service-detail' pk=s.pk %}">{{ s.title }}</a></h4>
+                                <ul class="job-info">
+                                    {% if s.employer.profile.company_profile.name %}
+                                    <li><span class="icon flaticon-briefcase"></span>{{ s.employer.profile.company_profile.name }}
+                                    </li>
+                                    {% else %}
+                                    <li><span class="icon flaticon-briefcase"></span> {{ s.employer.first_name }} {{ s.employer.last_name }}</li>
+                                    {% endif %}
+                                    <li><span class="icon flaticon-map-locator"></span> {{ s.get_location_display }}
+                                    </li>
+                                    <li><span class="icon flaticon-clock-3"></span> {{ s.date }}</li>
+                                    <li><span class="icon flaticon-money"></span> {{ s.pay_rate }} тенге</li>
+                                </ul>
+                                <ul class="job-other-info">
+                                  {% if s.time_count == 'full' %}
+                                  <li class="time">Полная занятость</li>
+                                  {% elif s.time_count == 'part' %}
+                                  <li class="privacy">Договорная занятость</li>
+                                  {% else %}
+                                  <li class="required">Единоразовая услуга</li>
+                                  {% endif %}
+                                </ul>
+                                <form action="{% url 'jobs:add_to_favorites' job_id=s.pk %}" method="post">
+                                    {% csrf_token %}
+                                    {% if s in user.favorites.all %}
+                                    <button type="submit" class="bookmark-btn"><span class="icon la la-heart-o"></span>
+                                    </button>
+                                    {% else %}
+                                    <button type="submit" class="bookmark-btn"><span class="icon la la-heart"></span>
+                                    </button>
+                                    {% endif %}
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Listing Show More -->
+                    <nav class="ls-pagination">
+                        <ul>
+                            {% if page_obj.has_previous %}
+                            <li class="prev">
+                                <a href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode }}">
+                                    <i class="fa fa-arrow-left"></i>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="prev disabled">
+                                <a href="#">
+                                    <i class="fa fa-arrow-left"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                            <li><a href="#" class="current-page" style="background-color: #34A853;">{{ num }}</a></li>
+                            {% else %}
+                            <li>
+                                <a href="?page={{ num }}&{{ request.GET.urlencode }}">{{ num }}</a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <li class="next">
+                                <a href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode }}">
+                                    <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="next disabled">
+                                <a href="#">
+                                    <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

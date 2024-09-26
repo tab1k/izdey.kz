@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+{% block content %}
+<section class="page-title">
+    <div class="auto-container">
+        <div class="title-outer">
+            <h1>Категории</h1>
+            <ul class="page-breadcrumb">
+                <li><a href="/">Главная</a></li>
+                <li>Категории</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+
+<section class="job-categories" style="padding-top: 40px; padding-bottom: 10px;">
+    <div class="auto-container">
+        <form method="get" action=".">
+            <div class="d-flex mb-3 form-group col-lg-6 col-md-12">
+                {{ search_form.query }}
+                <button type="submit" class=" align-items-center btn-style-one bg-blue"
+                        style="margin-left: 5px; background-color: #34A853;">Поиск
+                </button>
+            </div>
+        </form>
+        <div class="row wow fadeInUp animated animated" style="margin-top: 30px;">
+            {% for c in categories %}
+            <div class="category-block-two at-home20">
+                <a href="{% url 'jobs:category-detail' pk=c.pk %}">
+                    <div class="inner-box">
+                        <div class="content">
+                            <h4><a href="{% url 'jobs:category-detail' pk=c.pk %}">{{ c.name }}</a></h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <style>
+                .category-block-two.at-home20:hover .inner-box {
+                    background: #1eb81e;
+                    box-shadow: 0px 6px 15px 0px rgba(64, 79, 104, 0.05);
+                }
+            </style>
+            {% endfor %}
+            <!-- Category Block -->
+            <div class="w-100 d-md-none"></div> <!-- Clearfix on mobile -->
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Основные стили для карточек */
+    .category-block-two {
+        margin-bottom: 30px; /* Отступ снизу между карточками */
+    }
+
+    /* Адаптивные стили */
+    @media (max-width: 767px) {
+        .category-block-two {
+            flex: 0 0 50%; /* Занимает 50% ширины экрана на мобильных устройствах */
+            max-width: 50%; /* Ограничение ширины до 50% */
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 991px) {
+        .category-block-two {
+            flex: 0 0 33.33%; /* Занимает 33.33% ширины экрана на устройствах среднего размера */
+            max-width: 33.33%; /* Ограничение ширины до 33.33% */
+        }
+    }
+
+    @media (min-width: 992px) {
+        .category-block-two {
+            flex: 0 0 25%; /* Занимает 25% ширины экрана на десктопе */
+            max-width: 25%; /* Ограничение ширины до 25% */
+        }
+    }
+
+</style>
+{% endblock %}
+</body>
+</html>

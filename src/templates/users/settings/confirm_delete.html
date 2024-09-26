@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Удаление аккаунта</title>
+</head>
+<body>
+{% block content %}
+<section class="ls-section" style="border: none; padding-top: 20px;">
+
+    <div class="auto-container">
+
+
+        <div class="job-block"
+             style="background-color: #fff; border-radius: 10px; margin: 20px auto; justify-content: center;">
+            <div class="inner-box">
+                <div class="container text-center">
+                    <h2 style="color: black;">Удаление аккаунта</h2>
+                    <p style="color: black; margin-top: 10px;">Вы уверены, что хотите удалить свой аккаунт? Это действие
+                        необратимо и приведет к потере всех ваших данных.</p>
+                </div>
+                <div class="container mt-3">
+                    <form method="post" style="text-align: center;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger"
+                                style="background-color: #dc3545; border: none; color: white; padding: 10px 20px; border-radius: 5px; font-size: 16px; cursor: pointer;">
+                            Удалить аккаунт
+                        </button>
+                        <a href="{% url 'myaccount:user_my_profile' %}" class="btn btn-secondary"
+                           style="background-color: #34A853; border: none; color: white; padding: 10px 20px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-left: 10px;">Отмена</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+</body>
+</html>

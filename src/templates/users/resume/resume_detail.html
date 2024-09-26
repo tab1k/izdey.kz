@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+{% block content %}
+<section class="ls-section" style="border: none; padding-top: 20px;">
+
+    <div class="auto-container">
+
+        <div class="job-block" style="background-color: #fff; border-radius: 10px;margin: 0 auto; justify-content: center;">
+            <div class="inner-box">
+                <div class="container">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <!-- Название резюме -->
+                        <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                            <div style="display: flex; align-items: center;">
+                                <span class="icon fi fi-rr-books" style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                <span style="font-size: 16px; font-weight: 500;">Профессия:</span>
+                            </div>
+                            <span style="color: #333; font-size: 16px;">{{ resume.title }}</span>
+                        </li>
+
+                        <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                            <div style="display: flex; align-items: center;">
+                                <span class="icon fi fi-rr-list-check" style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                <span style="font-size: 16px; font-weight: 500;">Категория:</span>
+                            </div>
+                            <span style="color: #333; font-size: 16px;">{{ resume.category }}</span>
+                        </li>
+
+
+                        <!-- Образование -->
+                        <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                            <div style="display: flex; align-items: center;">
+                                <span class="icon fi fi-rr-file-chart-pie" style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                <span style="font-size: 16px; font-weight: 500;">Образование:</span>
+                            </div>
+                            <span style="color: #333; font-size: 16px;">{{ resume.get_education_level }}</span>
+                        </li>
+
+                        <!-- Учреждение -->
+                        <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                            <div style="display: flex; align-items: center;">
+                                <span class="icon fi fi-rr-school" style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                <span style="font-size: 16px; font-weight: 500;">Учреждение:</span>
+                            </div>
+                            {% if resume.vuz %}
+                            <span class="vuz-full">{{ resume.vuz }}</span>
+
+                            <!-- Сокращенный текст для мобильных -->
+                            <span class="vuz-short">{{ resume.vuz|truncatechars:15 }}</span>
+                            {% else %}
+                            <span style="color: #333; font-size: 16px;">Отсутствует</span>
+                            {% endif %}
+                        </li>
+
+                        <style>
+                          /* Скрыть сокращенный текст на больших экранах */
+                          .vuz-short {
+                            display: none;
+                          }
+
+                          /* Скрыть полный текст на мобильных */
+                          @media (max-width: 768px) {
+                            .vuz-full {
+                              display: none;
+                            }
+
+                            .vuz-short {
+                              display: inline;
+                            }
+                          }
+                        </style>
+
+                        <!-- Опыт работы -->
+                        <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                            <div style="display: flex; align-items: center;">
+                                <span class="icon fi fi-rr-clock-three" style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                <span style="font-size: 16px; font-weight: 500;">Опыт работы:</span>
+                            </div>
+                            <span style="color: #333; font-size: 16px;">{{ resume.get_experience }}</span>
+                        </li>
+
+                        <!-- Навыки -->
+                        <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                            <div style="display: flex; align-items: center;">
+                                <span class="icon fi fi-rr-align-left" style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                <span style="font-size: 16px; font-weight: 500;">Навыки:</span>
+                            </div>
+                            <span style="color: #333; font-size: 16px;">{{ resume.skills }}</span>
+                        </li>
+
+                        <!-- Контактная информация -->
+                        <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0;">
+                            <div style="display: flex; align-items: center;">
+                                <span class="icon fi fi-rr-phone-call" style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                <span style="font-size: 16px; font-weight: 500;">Телефон:</span>
+                            </div>
+                            <span style="color: #333; font-size: 16px;">{{ resume.phone_number }}</span>
+                        </li>
+
+                        <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0;">
+                            <div style="display: flex; align-items: center;">
+                                <span class="icon fi fi-rr-envelope" style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                <span style="font-size: 16px; font-weight: 500;">Email:</span>
+                            </div>
+                            <span style="color: #333; font-size: 16px;">{{ resume.email }}</span>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="job-block" style="background-color: #fff; border-radius: 10px;margin: 20px auto; justify-content: center;">
+            <div class="inner-box">
+                <div class="container">
+                    <div class="d-flex">
+                        <a href="{% url 'myaccount:profile' %}" class="theme-btn btn-style-one bg-green" style="background-color: #34A853;">Назад</a>
+                        <a href="{% url 'myaccount:resume:resume_edit' %}" class="theme-btn btn-style-one" style="background-color: #34A853; margin-left: 10px;">Редактировать резюме</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+</body>
+</html>

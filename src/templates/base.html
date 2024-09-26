@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <title>IZDEY.kz</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+          content="Izdey.kz - Платформа для поиска работы и найма специалистов. Найдите вакансии, кандидатов и получите карьерные советы.">
+    <meta name="keywords"
+          content="Izdey, работа, вакансии, карьерные возможности, поиск работы, найм сотрудников, вакансии в Казахстане, работа в Казахстане, онлайн-резюме, карьерное развитие, рекрутинг, профессиональные услуги, работа в IT, работа в бизнесе, консалтинг, вакансии, трудоустройство, сайт вакансий, работа в Алматы, работа в Астане, работа в Шымкенте">
+    <meta name="author" content="Izdey.kz">
+
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+
+    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'favicon.png' %}" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.png' %}">
+    <link rel="manifest" href="{% static 'images/favicon.png' %}">
+    <link rel="mask-icon" href="{% static 'images/favicon.png' %}" color="#6366f1">
+    <meta name="msapplication-TileColor" content="#080032">
+    <meta name="msapplication-config" content="{% static 'website/favicon/browserconfig.xml' %}">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel='stylesheet'
+          href='https://cdn-uicons.flaticon.com/2.5.1/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+
+    <!-- Preloader -->
+    <!--    <div id="preloader">-->
+    <!--        <div class="progress-bar">-->
+    <!--            <div class="progress"></div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+
+    <!-- Стили -->
+    <style>
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .progress-bar {
+            width: 80%;
+            height: 5px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background-color: #03b003;
+            animation: loadProgress 5s infinite;
+        }
+
+        @keyframes loadProgress {
+            0% {
+                width: 0%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+    </style>
+
+    <!-- JS -->
+    <script>
+        window.addEventListener('load', function () {
+            document.getElementById('preloader').style.display = 'none';
+        });
+    </script>
+
+
+    <!-- Header Span -->
+    <span class="header-span"></span>
+
+    <!-- Main Header-->
+    <header class="main-header">
+
+        <!-- Main box -->
+        <div class="main-box">
+            <!--Nav Outer -->
+            <div class="nav-outer">
+                <div class="logo-box">
+                    <div class="logo">
+                        <a href="/"><img style="height: 45px;" src="{% static 'izdey_logo.png' %}" alt="" title=""></a>
+                    </div>
+                </div>
+
+                <nav class="nav main-menu">
+                    <ul class="navigation" id="navbar">
+                        <li class="p">
+                            <a href="/" class="ajax-link"><span>Главная</span></a>
+                        </li>
+
+                        <li class="p">
+                            <a href="{% url 'favorites:favorites-list' %}" class="ajax-link"><span>Избранное</span></a>
+                        </li>
+
+                        <li class="p">
+                            <a href="{% url 'wallet:info' %}" class="ajax-link"><span>Кошелек</span></a>
+                        </li>
+
+
+                        <!-- Only for Mobile View -->
+                        <li class="mm-add-listing">
+                            <a href="add-listing.html" class="theme-btn btn-style-one">Job Post</a>
+                            <span>
+                  <span class="contact-info">
+                    <span class="phone-num"><span>Call us</span><a href="tel:1234567890">123 456 7890</a></span>
+                <span class="address">329 Queensberry Street, North Melbourne VIC <br>3051, Australia.</span>
+                <a href="mailto:support@superio.com" class="email">support@superio.com</a>
+                </span>
+                <span class="social-links">
+                    <a href="#"><span class="fab fa-facebook-f"></span></a>
+                <a href="#"><span class="fab fa-twitter"></span></a>
+                <a href="#"><span class="fab fa-instagram"></span></a>
+                <a href="#"><span class="fab fa-linkedin-in"></span></a>
+                </span>
+                </span>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- Main Menu End-->
+            </div>
+
+            {% if user.is_authenticated %}
+            <div class="outer-box">
+                <div class="dropdown dashboard-option">
+                    <button class="menu-btn" data-toggle="dropdown">
+                        <span class="icon la la-map-marker"></span>
+                    </button>
+
+                    <ul class="dropdown-menu">
+                        {% csrf_token %}
+                        {% for location_code, location_name in location_choices %}
+                        <li>
+                            <a href="#" class="location-link" data-location="{{ location_code }}"><i
+                                    style="color: green;" class="fi fi-rr-house-building"></i> {{ location_name }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const locationLinks = document.querySelectorAll('.location-link');
+
+                            locationLinks.forEach(link => {
+                                link.addEventListener('click', function (event) {
+                                    event.preventDefault();
+                                    const locationCode = this.getAttribute('data-location');
+
+                                    fetch("{% url 'users:update_location' %}", {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/x-www-form-urlencoded',
+                                            'X-CSRFToken': '{{ csrf_token }}',
+                                            'X-Requested-With': 'XMLHttpRequest'
+                                        },
+                                        body: new URLSearchParams({
+                                            'location': locationCode
+                                        })
+                                    })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.message) {
+                                                location.reload(); // Перезагружаем страницу после успешного обновления местоположения
+                                            } else if (data.error) {
+                                                console.error('Error:', data.error); // Логируем ошибку
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error('Error:', error);
+                                        });
+                                });
+                            });
+                        });
+
+                    </script>
+                </div>
+
+                <button class="menu-btn">
+                    <a href="#">
+                        <span class="icon la la-language"></span>
+                    </a>
+                </button>
+
+                <button class="menu-btn">
+                    <a href="{% url 'favorites:favorites-list' %}">
+                        <span style="background-color: #03b003;" class="count">{{ favorites_count }}</span>
+                        <span class="icon la la-heart-o"></span>
+                    </a>
+                </button>
+
+                <button class="menu-btn">
+                    <a href="{% url 'notifications:notification_list' %}">
+                        <span style="background-color: #03b003;" class="count">{{ unread_count }}</span>
+                        <span class="icon la la-bell"></span>
+                    </a>
+                </button>
+
+                <!-- Dashboard Option -->
+                <div class="dropdown dashboard-option">
+                    <a role="button" data-toggle="dropdown" aria-expanded="false">
+                        {% if user.profile.image %}
+                        <img style="width: 40px; height: 40px;" src="{{ user.profile.image.url }}" alt="avatar"
+                             class="thumb">
+                        {% else %}
+                        <img src="{% static 'images/1-9.png' %}" alt="avatar" class="thumb">
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'myaccount:profile' %}"><i class="la la-user-alt"></i>Профиль</a></li>
+                        {% if user.is_authenticated %}
+                        {% if user.is_superuser %}
+                        <li><a href="{% url 'admin_app:info' %}"><i class="la la-briefcase"></i>Админ-панель</a></li>
+                        <li><a href="{% url 'admin:index' %}"><i class="la la-comment-o"></i>Движок</a></li>
+                        {% endif %}
+                        {% if user.profile.company_profiles.exists %}
+                        <li><a href="#"><i class="la la-dashboard"></i>Панель </a></li>
+                        {% endif %}
+                        {% endif %}
+                        <li>
+                            <form action="{% url 'users:logout' %}" method="post">
+                                {% csrf_token %}
+                                <a><i class="la la-sign-out"></i>
+                                    <button>Выйти</button>
+                                </a>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            {% else %}
+            <div class="outer-box">
+                <!-- Add Listing -->
+                <a href="{% url 'users:employer_request' %}" class="upload-cv" style="color: black;"> Нанять
+                    работников?</a>
+                <!-- Login/Register -->
+                <div class="btn-box">
+                    <a href="{% url 'users:signin' %}" style="background-color: #34A853; color: white;"
+                       class="theme-btn btn-style-three">Войти</a>
+                    <!--            <a href="dashboard-post-job.html" class="theme-btn btn-style-one">Опубликовать пост</a>-->
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Mobile Header -->
+        <div class="mobile-header" style="align-items: center;">
+            <div class="logo">
+                <a href="/"><img style="height: 35px;" src="{% static 'izdey_logo.png' %}" alt="" title=""></a>
+            </div>
+
+            <!--Nav Box-->
+            <div class="nav-outer clearfix">
+                <div class="outer-box" style="margin: 0px;">
+                    <!-- Dropdown для выбора города -->
+                    {% if user.is_authenticated %}
+                    <div class="dropdown dashboard-option show d-flex">
+                        <button class="menu-btn" data-toggle="dropdown" aria-expanded="true">
+                            <span class="icon la la-map-marker"></span>
+                        </button>
+
+                        <ul class="dropdown-menu">
+                            {% csrf_token %}
+                            {% for location_code, location_name in location_choices %}
+                            <li><a href="#" class="location-link" data-location="{{ location_code }}"><i
+                                    style="color: green;" class="fi fi-rr-house-building"></i> {{ location_name }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    <!-- Dropdown для профиля пользователя -->
+                    {% if user.is_authenticated %}
+                    <div class="dropdown dashboard-option">
+                        <a role="button" data-toggle="dropdown" aria-expanded="false">
+                            {% if user.profile.image %}
+                            <img style="width: 40px; height: 40px;"
+                                 src="{{ user.profile.image.url }}" alt="avatar"
+                                 class="thumb">
+                            {% else %}
+                            <img style="width: 40px; height: 40px;"
+                                 src="{% static 'images/favicon.png' %}" alt="avatar"
+                                 class="thumb">
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'myaccount:profile' %}"><i
+                                    class="la la-user-alt"></i>Профиль</a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin_app:info' %}"><i
+                                    class="la la-briefcase"></i>Админ-панель</a></li>
+                            <!--                            <li>-->
+                            <!--                                <form action="{% url 'users:logout' %}" method="post" style="display: inline;">-->
+                            <!--                                    {% csrf_token %}-->
+                            <!--                                    <button type="submit" class="dropdown-item">-->
+                            <!--                                        <i class="la la-sign-out"></i> Выйти-->
+                            <!--                                    </button>-->
+                            <!--                                </form>-->
+                            <!--                            </li>-->
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+
+
+        <style>
+
+            .logo {
+                display: flex;
+                align-items: center;
+                height: 100%; /* Убедитесь, что контейнер занимает полную высоту */
+            }
+
+            .nav-outer {
+                display: flex;
+                align-items: center; /* Центрирование всех элементов по вертикали */
+                justify-content: space-between; /* Для равномерного распределения логотипа и других элементов */
+                height: 100%; /* Важно, чтобы родительский блок имел высоту */
+            }
+
+            .outer-box {
+                display: flex;
+                align-items: center; /* Центрирование элементов внутри по вертикали */
+            }
+
+            .dropdown.dashboard-option {
+                display: flex;
+                align-items: center; /* Центрирование dropdown по вертикали */
+            }
+
+            .dropdown-menu {
+                display: none;
+            }
+
+            .dropdown-menu.show {
+                display: block !important;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                transform: translate3d(0, 0, 0) !important;
+            }
+
+            .menu-btn, .dropdown > a {
+                cursor: pointer;
+
+            }
+
+        </style>
+
+
+    </header>
+    <!--End Main Header -->
+
+    <!--Page Title-->
+    <div id="main-content">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+
+    <script>
+        $(document).on('click', '.pagination a', function (event) {
+            event.preventDefault();
+            var url = $(this).attr('href');
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                headers: {'X-Requested-With': 'XMLHttpRequest'},
+                success: function (response) {
+                    $('#main-content').html(response.html);
+                },
+                error: function () {
+                    alert('Ошибка загрузки данных');
+                }
+            });
+        });
+    </script>
+
+    <!--End Listing Page Section -->
+    {% if user.is_authenticated %}
+    {% else %}
+    <section class="call-to-action mb-5">
+        <div class="auto-container">
+            <div class="outer-box wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
+                <div class="content-column">
+                    <div class="sec-title">
+                        <h2>Рекрутор?</h2>
+                        <div class="text">Рекламируйте свои вакансии миллионам пользователей ежемесячно и находите
+                            миллионы резюме в нашей базе данных.
+                        </div>
+                        <a href="{% url 'users:employer_request' %}" style="background-color: #34A853;"
+                           class="theme-btn btn-style-one bg-blue"><span
+                                class="btn-title">Начни сейчас</span></a>
+                    </div>
+                </div>
+
+                <div class="image-column" style="background-image: url({% static 'images/recrutor.webp' %});">
+                    <figure class="image"><img src="{% static 'images/recrutor.webp' %}" alt=""></figure>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <div class="navbar navbar-mobile" style="padding: 15px;">
+        <ul class="navbar-nav">
+            <!-- Nav item Home -->
+            <li class="nav-item">
+                <a class="nav-link ajax-link" style="color: green;" href="{% url 'jobs:home' %}">
+                    <i class="fi-rr-home"></i>
+                    <span class="mb-0 nav-text">Главная</span>
+                </a>
+            </li>
+
+
+            <li class="nav-item">
+                <a class="nav-link ajax-link"
+                   href="{% url 'myaccount:responses' %}">
+                    <i class="fi fi-rr-envelope-plus"></i>
+                    <span class="mb-0 nav-text">Отклики</span>
+                </a>
+            </li>
+
+            <!-- Nav item Create -->
+            <li class="nav-item">
+                {% if user.is_authenticated %}
+                {% if user.profile.account_type == 'employer' %}
+                <a class="nav-link ajax-link" href="{% url 'jobs:vacancy-create' %}">
+                    <i class="fi fi-rr-add"></i>
+                    <span class="mb-0 nav-text">Создать</span>
+                </a>
+                {% else %}
+                <a class="nav-link ajax-link" href="{% url 'jobs:service-create' %}">
+                    <i class="fi fi-rr-add"></i>
+                    <span class="mb-0 nav-text">Создать</span>
+                </a>
+                {% endif %}
+                {% else %}
+                <a class="nav-link ajax-link"
+                   href="{% url 'users:signin' %}">
+                    <i class="fi fi-rr-add"></i>
+                    <span class="mb-0 nav-text">Создать</span>
+                </a>
+                {% endif %}
+            </li>
+
+            <!-- Nav item Favorites -->
+            <li class="nav-item">
+                {% if user.is_authenticated %}
+                <a class="nav-link ajax-link"
+                   href="{% url 'favorites:favorites-list' %}">
+                    <i class="fi fi-rr-heart"></i>
+                    <span class="mb-0 nav-text">Избранное</span>
+                </a>
+                {% else %}
+                <a class="nav-link ajax-link">
+                    <i class="fi fi-rr-heart"></i>
+                    <span class="mb-0 nav-text">Избранное</span>
+                </a>
+                {% endif %}
+            </li>
+
+            <!-- Nav item Account -->
+            <li class="nav-item">
+                {% if user.is_authenticated %}
+                <a class="nav-link ajax-link"
+                   href="{% url 'myaccount:settings' %}">
+                    <i class="fi fi-rr-circle-user"></i>
+                    <span class="mb-0 nav-text">Аккаунт</span>
+                </a>
+                {% else %}
+                <a class="nav-link ajax-link"
+                   href="{% url 'users:signin' %}">
+                    <i class="fi fi-rr-circle-user"></i>
+                    <span class="mb-0 nav-text">Войти</span>
+                </a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+
+
+    <style>
+        /* Скрыть мобильную навигацию по умолчанию */
+        .navbar-mobile {
+            display: none;
+        }
+
+        /* Отображать навигацию на мобильных устройствах и планшетах */
+        @media (max-width: 991.98px) {
+            .navbar-mobile {
+                display: block;
+                background-color: #ffffff;
+                border-radius: 1rem 1rem 0 0 !important;
+                width: 100%;
+                position: fixed;
+                left: 50%;
+                bottom: 0;
+                -webkit-transform: translateX(-50%);
+                transform: translateX(-50%);
+                z-index: 1030;
+                padding: 0.5rem 2rem;
+                -webkit-box-shadow: 0 1rem 3rem rgba(29, 58, 83, 0.5);
+                box-shadow: 0 1rem 3rem rgba(29, 58, 83, 0.5);
+            }
+
+            .navbar-mobile .navbar-nav {
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: row;
+                flex-direction: row;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-pack: justify !important;
+                -ms-flex-pack: justify !important;
+                justify-content: space-between !important;
+            }
+
+            .navbar-mobile .nav-item {
+                text-align: center;
+            }
+
+            .navbar-mobile .nav-item .nav-link {
+                font-size: 1.3rem;
+                color: var(--bs-body-color);
+                padding: 0;
+            }
+
+            .navbar-mobile .nav-item .nav-link.active, .navbar-mobile .nav-item .nav-link:hover {
+                color: var(--bs-navbar-active-color);
+            }
+
+            .navbar-mobile .nav-item .nav-link .nav-text {
+                font-size: 0.6em;
+                display: block;
+            }
+
+            /* Учитываем отступы в футере для мобильных и планшетов */
+            .has-navbar-mobile footer {
+                padding-bottom: 4rem !important;
+            }
+        }
+    </style>
+
+
+    <!-- Main Footer -->
+    <footer class="main-footer alternate5">
+        <div class="auto-container">
+            <!--Widgets Section-->
+            <div class="widgets-section">
+                <div class="row">
+                    <div class="big-column col-xl-4 col-lg-3 col-md-12">
+                        <div class="footer-column about-widget">
+                            <div class="logo">
+                                <a href="{% url 'jobs:home' %}"><img src="{% static 'images/favicon.png' %}"
+                                                                     style="height: 100px;" alt=""></a>
+                            </div>
+                            <p class="phone-num"><span>Звоните </span><a href="tel:+77077449406" style="color: green;">+77077449406</a>
+                            </p>
+                            <p class="address">Алматы, Казахстан.
+                                <br><a href="mailto:support@superio.com" class="email">info@izdey.kz</a></p>
+                        </div>
+                    </div>
+
+                    <div class="big-column col-xl-8 col-lg-9 col-md-12">
+                        <div class="row">
+                            <div class="footer-column col-lg-3 col-md-6 col-sm-12">
+                                <div class="footer-widget links-widget">
+                                    <h4 class="widget-title">Для кандидатов</h4>
+                                    <div class="widget-content">
+                                        <ul class="list">
+                                            <li><a href="#">Просмотр вакансий</a></li>
+                                            <li><a href="#">Просмотр категорий</a></li>
+                                            <li><a href="#">Личный кабинет кандидата</a></li>
+                                            <li><a href="#">Оповещения о вакансиях</a></li>
+                                            <li><a href="#">Мои закладки</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="footer-column col-lg-3 col-md-6 col-sm-12">
+                                <div class="footer-widget links-widget">
+                                    <h4 class="widget-title">Для работодателей</h4>
+                                    <div class="widget-content">
+                                        <ul class="list">
+                                            <li><a href="#">Просмотр кандидатов</a></li>
+                                            <li><a href="#">Личный кабинет работодателя</a></li>
+                                            <li><a href="#">Добавить вакансию</a></li>
+                                            <li><a href="#">Пакеты вакансий</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="footer-column col-lg-3 col-md-6 col-sm-12">
+                                <div class="footer-widget links-widget">
+                                    <h4 class="widget-title">О нас</h4>
+                                    <div class="widget-content">
+                                        <ul class="list">
+                                            <li><a href="#">Страница с вакансиями</a></li>
+                                            <li><a href="#">Альтернативная страница с вакансиями</a></li>
+                                            <li><a href="#">Резюме</a></li>
+                                            <li><a href="#">Блог</a></li>
+                                            <li><a href="#">Контакты</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="footer-column col-lg-3 col-md-6 col-sm-12">
+                                <div class="footer-widget links-widget">
+                                    <h4 class="widget-title">Полезные ресурсы</h4>
+                                    <div class="widget-content">
+                                        <ul class="list">
+                                            <li><a href="#">Карта сайта</a></li>
+                                            <li><a href="#">Условия использования</a></li>
+                                            <li><a href="#">Центр конфиденциальности</a></li>
+                                            <li><a href="#">Центр безопасности</a></li>
+                                            <li><a href="#">Центр доступности</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Bottom-->
+        <div class="footer-bottom">
+            <div class="auto-container">
+                <div class="outer-box">
+                    <div class="copyright-text">© 2024 <a href="#">WorkBench</a>. Все права защищены.</div>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll To Top -->
+        <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
+    </footer>
+
+    <!-- End Main Footer -->
+
+</div>
+<!-- End Page Wrapper -->
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/chosen.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery.fancybox.js' %}"></script>
+<script src="{% static 'js/jquery.modal.min.js' %}"></script>
+<script src="{% static 'js/mmenu.polyfills.js' %}"></script>
+<script src="{% static 'js/mmenu.js' %}"></script>
+<script src="{% static 'js/appear.js' %}"></script>
+<script src="{% static 'js/ScrollMagic.min.js' %}"></script>
+<script src="{% static 'js/rellax.min.js' %}"></script>
+<script src="{% static 'js/owl.js' %}"></script>
+<script src="{% static 'js/wow.js' %}"></script>
+<script src="{% static 'js/script.js' %}"></script>
+
+<!--<script>-->
+<!--    function loadContent(url) {-->
+<!--  console.log('Loading content from:', url); // Логируем URL-->
+<!--  $.ajax({-->
+<!--    url: url,-->
+<!--    method: 'GET',-->
+<!--    success: function(data) {-->
+<!--      $('#main-content').html(data.html);-->
+<!--    },-->
+<!--    error: function(xhr, status, error) {-->
+<!--      console.error('Ошибка загрузки данных:', status, error); // Логируем ошибку-->
+<!--    }-->
+<!--  });-->
+<!--}-->
+
+
+<!--    $(document).ready(function () {-->
+<!--        // Обработчики кликов на ссылки-->
+<!--        $('a.ajax-link').on('click', function (e) {-->
+<!--            e.preventDefault();-->
+<!--            const url = $(this).attr('href');-->
+<!--            loadContent(url);-->
+<!--        });-->
+
+<!--        // Загружаем контент при загрузке страницы-->
+<!--        if (window.location.pathname !== '/') {-->
+<!--            loadContent(window.location.pathname);-->
+<!--        }-->
+<!--    });-->
+
+
+<!--</script>-->
+
+</body>
+
+</html>

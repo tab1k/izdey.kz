@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div id="main-content" style="min-height: 500px;">
+
+    <section class="page-title">
+        <div class="auto-container">
+            <div class="title-outer">
+                <h1>Мои вакансии</h1>
+                <ul class="page-breadcrumb">
+                    <li><a href="/">Главная</a></li>
+                    <li>Мои вакансии</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div class="d-flex justify-content-center">
+        <div class="container">
+            <div class="ls-outer">
+
+                {% if object_list %}
+                {% for vacancy in object_list %}
+                <div class="job-block mt-3">
+                    <div class="inner-box">
+                        <div class="content">
+
+                            <span class="company-logo">
+                              {% if vacancy.employer.profile.company_profile and vacancy.employer.profile.company_profile.logo %}
+                                <a href="{% url 'jobs:vacancy-detail' pk=vacancy.pk %}">
+                                  <img style="border-radius: 5px;"
+                                       src="{{ vacancy.employer.profile.company_profile.logo.url }}" alt="">
+                                </a>
+                              {% else %}
+                                <a href="{% url 'jobs:vacancy-detail' pk=vacancy.pk %}">
+                                  <img style="border-radius: 5px;" src="{% static 'images/favicon.png' %}" alt="">
+                                </a>
+                              {% endif %}
+                            </span>
+
+                            <h4>
+                                <a href="{% url 'jobs:vacancy-detail' pk=vacancy.pk %}">{{ vacancy.title }}</a>
+                            </h4>
+                            <ul class="job-info">
+                                {% if vacancy.employer.profile.company_profile %}
+                                <li><span class="icon flaticon-briefcase"></span>{{ vacancy.employer.profile.company_profile.name }}
+                                </li>
+                                {% endif %}
+                                <li><span class="icon flaticon-map-locator"></span> {{ vacancy.get_location_display }}
+                                </li>
+                                <li><span class="icon flaticon-clock-3"></span> {{ vacancy.date_posted }}</li>
+                                <li><span class="icon flaticon-money"></span> {{ vacancy.pay_rate }} тенге</li>
+                            </ul>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <ul class="job-other-info"
+                                    style="margin: 0; padding: 0; display: flex; align-items: center;">
+                                    {% if vacancy.time_count == 'full' %}
+                                    <li class="privacy" style="margin: 0px;">Полная занятость</li>
+                                    {% endif %}
+                                </ul>
+                                <div class="option-box">
+                                    <ul class="option-list d-flex" style="list-style: none; padding: 0; margin: 0;">
+                                        <li style="margin-right: 10px; background: #34A853; border-radius: 25%;">
+                                            <a href="{% url 'jobs:vacancy-detail' pk=vacancy.pk %}" style="color: white;" style="color: white;" data-text="Подробнее">
+                                                <span class="la la-eye"></span>
+                                            </a>
+                                        </li>
+                                        <style>
+                                            .option-list li button:hover, .option-list li a:hover {
+                                                background: #34A853;
+                                                color: #ffffff;
+                                            }
+                                        </style>
+                                        <li>
+                                            <form method="post" action="{% url 'myaccount:delete_job' pk=vacancy.pk %}">
+                                                {% csrf_token %}
+                                                <button type="submit" style="background-color: #ec2929;"
+                                                        data-text="Удалить вакансию"
+                                                        class="delete-button">
+                                                    <span style="color: white;" class="la la-trash"></span>
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p class="mt-5 text-center">У вас пока нет опубликованных вакансий.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

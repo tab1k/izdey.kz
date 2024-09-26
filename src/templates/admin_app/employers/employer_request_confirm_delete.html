@@ -1,0 +1,35 @@
+{% extends 'admin_app/base.html' %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% block content %}
+    <div id="dashboard-wrapper" class="dashboard-outer">
+            <div class="dashboard-inner">
+              <!-- Dashboard Wrapper -->
+              <div class="dashboard-wrapper">
+                <div id="main-dashboard" class="section-wrapper">
+                  <!-- Dashboard content -->
+                  <div class="dashboard-columns">
+                    <div class="contact-profile-wrap">
+                        <h2>Подтвердить удаление</h2>
+                        <p>Вы уверены, что хотите удалить заявку "{{ request }}"?</p>
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit">Удалить</button>
+                            <a href="{% url 'admin_app:employer-requests' %}">Отмена</a>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+    </div>
+    {% endblock %}
+</body>
+</html>

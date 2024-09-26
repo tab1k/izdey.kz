@@ -1,0 +1,276 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="ls-section" style="border: none; padding-top: 20px; min-height: 700px;">
+    <div class="auto-container" style="min-height: 500px;">
+        <div class="tabs" style="background: rgba(64, 79, 104, 0.05); border-radius: 5px; padding: 5px;">
+            <button class="tab-button active" onclick="openTab('my-cards')"
+                    style="border-radius: 5px; border-bottom: none; color: black; width: 50%; margin: 0;">
+                Отклики
+            </button>
+            <button class="tab-button" onclick="openTab('other-cards')"
+                    style="border-radius: 5px; border-bottom: none; color: black; width: 50%; margin: 0;">
+                Мои отклики
+            </button>
+        </div>
+
+
+
+        <div id="my-cards" class="tab-content active">
+            <div class="job-block done" style="background-color: #fff; border-radius: 10px; justify-content: center; margin-bottom: 10px;">
+                <div class="inner-box dones">
+                    <div class="container">
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <!-- Мой профиль -->
+                            <a style="color: black;" href="{% url 'myaccount:responses_done' %}">
+                                <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0;">
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="margin-top: 7px;">
+                                            <span class="icon fi fi-rr-checkbox" style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                        </div>
+                                        <span style="font-size: 16px; font-weight: 500;">Одобренные вакансии</span>
+                                    </div>
+                                    <span style="color: #333; font-size: 20px;">&rsaquo;</span>
+                                </li>
+                            </a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                @media only screen and (max-width: 599px) {
+                    .done .dones {
+                        padding: 0px 10px;
+                    }
+                }
+            </style>
+            {% if my_responses %}
+            {% for response in my_responses %}
+            <div class="job-block" style="margin-bottom: 10px;">
+                <div class="inner-box">
+                    <div class="content">
+
+                        <span class="company-logo">
+                            {% if response.user.profile.company_profile and response.user.profile.company_profile.logo %}
+                            <a href="{% url 'jobs:vacancy-detail' pk=response.job.pk %}">
+                                <img style="border-radius: 5px;" src="{{ response.user.profile.company_profile.logo.url }}" alt="Company Logo">
+                            </a>
+                            {% elif response.user.profile.image %}
+                            <a href="{% url 'jobs:vacancy-detail' pk=response.job.pk %}">
+                                <img style="border-radius: 5px;" src="{{ response.user.profile.image.url }}" alt="User Image">
+                            </a>
+                            {% else %}
+                            <a href="{% url 'jobs:vacancy-detail' pk=response.job.pk %}">
+                                <img style="border-radius: 5px;" src="{% static 'images/favicon.png' %}" alt="Default Image">
+                            </a>
+                            {% endif %}
+                        </span>
+
+                        <h4>
+                            {% if response.user.profile.company_profile and response.user.profile.company_profile.name %}
+                            <a href="{% url 'users:profile-response' pk=response.user.pk %}">{{ response.user.profile.company_profile.name }} | </a>
+                            <a href="{% url 'jobs:vacancy-detail' pk=response.job.pk %}">
+                                <span>{{ response.job.title }}</span>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'users:profile-response' pk=response.user.pk %}">{{ response.user.first_name }} {{ response.user.last_name }} | </a>
+                            <a href="{% url 'jobs:vacancy-detail' pk=response.job.pk %}">
+                                <span>{{ response.job.title }}</span>
+                            </a>
+                            {% endif %}
+                        </h4>
+                        <ul class="job-info">
+                            {% if response.user.phone_number %}
+                            <li><span class="icon flaticon-briefcase"></span>{{ response.user.phone_number }} </li>
+                            {% endif %}
+                        </ul>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                                <ul class="job-other-info">
+                                    {% if response.job.time_count == 'full' %}
+                                    <li class="privacy">Полная занятость</li>
+                                    {% elif response.job.time_count == 'part' %}
+                                    <li class="time">Договорная занятость</li>
+                                    {% else %}
+                                    <li class="required">Единоразовая услуга</li>
+                                    {% endif %}
+                                </ul>
+                                <div class="option-box">
+                                    <ul class="option-list d-flex" style="list-style: none; padding: 0; margin: 0;">
+                                        <!-- Одобрить отклик -->
+                                        <li style="margin-right: 10px; background: #34A853; border-radius: 25%;">
+                                            <form method="post" action="{% url 'jobs:approve_job_response' pk=response.job.pk response_id=response.id %}">
+                                                {% csrf_token %}
+                                                <button type="submit" style="background-color: #34A853; color: white;" data-text="Одобрить">
+                                                    <div style="margin-top: 2px;">
+                                                        <span style="margin-top: 2px;" class="fi fi-rr-checkbox"></span>
+                                                    </div>
+                                                </button>
+                                            </form>
+                                        </li>
+
+                                        <!-- Отклонить отклик -->
+                                        <li style="margin-right: 10px; background: #ec2929; border-radius: 25%;">
+                                            <form method="post" action="{% url 'jobs:reject_job_response' pk=response.job.pk response_id=response.id %}">
+                                                {% csrf_token %}
+                                                <button type="submit" style="background-color: #ec2929; color: white;" data-text="Отказать">
+                                                    <div style="margin-top: 2px;">
+                                                        <span style="margin-top: 2px;" class="fi fi-rr-cross-circle"></span>
+                                                    </div>
+                                                </button>
+                                            </form>
+                                        </li>
+
+                                        <!-- Отправить отклик (если это необходимо) -->
+                                        <li style="margin-right: 10px; background: #55ACEE; border-radius: 25%;">
+                                            <a href="#" style="color: white; background-color: #55ACEE;" data-text="Отправить">
+                                                <div style="padding-top: 2px;">
+                                                    <span class="fi fi-rr-paper-plane"></span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="container text-center" style="margin-top: 30px;">
+                <p>На ваши вакансии еще нет откликов.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- МОИ ОТКЛИКИ-->
+
+        <div id="other-cards" class="tab-content">
+            {% if user_responses %}
+            {% for response in user_responses %}
+
+            <div class="job-block" style="margin-bottom: 10px;">
+                <div class="inner-box">
+                    <div class="content">
+
+                        <span class="company-logo">
+                            {% if response.job.employer.profile.company_profile and response.job.employer.profile.company_profile.logo %}
+                            <a href="{% url 'jobs:vacancy-detail' pk=response.job.pk %}">
+                                <img style="border-radius: 5px;" src="{{ response.job.employer.profile.company_profile.logo.url }}" alt="">
+                            </a>
+                            {% else %}
+                            <a href="{% url 'jobs:vacancy-detail' pk=response.job.pk %}">
+                                <img style="border-radius: 5px;" src="{% static 'images/favicon.png' %}" alt="">
+                            </a>
+                            {% endif %}
+                        </span>
+
+                        <h4><a href="{% url 'jobs:vacancy-detail' pk=response.job.pk %}">{{ response.job.title }}</a></h4>
+                        <ul class="job-info">
+                            {% if response.job.employer.profile.company_profile.name %}
+                            <li><span class="icon flaticon-briefcase"></span>{{ response.job.employer.profile.company_profile.name }}</li>
+                            {% endif %}
+                            <li><span class="icon flaticon-map-locator"></span> {{ response.job.date_posted }}
+                            </li>
+                            <li><span class="icon flaticon-clock-3"></span> {{ response.created_at|date:"d M Y H:i" }}
+                            </li>
+                            <li><span class="icon flaticon-money"></span> {{ response.job.pay_rate }} тенге</li>
+                        </ul>
+                        <ul class="job-other-info">
+                            {% if response.status == 'pending' %}
+                            <li class="privacy" style="width: 100%; text-align: center; height: 40px; align-content: center;">На рассмотрении</li>
+                            {% elif response.status == 'approved' %}
+                            <li class="time" style="width: 100%; text-align: center; height: 40px; align-content: center;">Одобрено</li>
+                            {% elif response.status == 'rejected' %}
+                            <li class="required" style="width: 100%; text-align: center; height: 40px; align-content: center;">Отклонено</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            {% endfor %}
+            {% else %}
+            <div class="container text-center" style="margin-top: 20px;">
+                <p>Вы еще не откликнулись ни на одну вакансию.</p>
+            </div>
+            {% endif %}
+        </div>
+
+
+        <!-- КОНЕЦ МОИ ОТКЛИКИ -->
+
+        <style>
+            .tabs {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+                background-color: #f1f1f1;
+                border-radius: 5px;
+            }
+
+            .tab-button {
+                padding: 10px 20px;
+                background-color: #f1f1f1;
+                border: none;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background-color 0.3s;
+                width: 50%; /* Каждая кнопка занимает половину длины */
+                margin: 0; /* Убираем отступы */
+                border-radius: 5px;
+            }
+
+            .tab-button.active {
+                background-color: white;
+                border-bottom: 2px solid #000;
+            }
+
+            .tab-content {
+                display: none;
+            }
+
+            .tab-content.active {
+                display: block;
+            }
+
+            .card {
+                background-color: #e6e6fa;
+                padding: 20px;
+                border-radius: 10px;
+                font-size: 20px;
+            }
+        </style>
+
+
+        <script>
+            function openTab(tabName) {
+                // Убираем класс active у всех вкладок и контента
+                var tabs = document.querySelectorAll('.tab-button');
+                var contents = document.querySelectorAll('.tab-content');
+
+                tabs.forEach(function (tab) {
+                    tab.classList.remove('active');
+                });
+
+                contents.forEach(function (content) {
+                    content.classList.remove('active');
+                });
+
+                // Добавляем класс active для выбранной вкладки и контента
+                document.querySelector(`[onclick="openTab('${tabName}')"]`).classList.add('active');
+                document.getElementById(tabName).classList.add('active');
+            }
+
+        </script>
+
+    </div>
+</section>
+
+{% endblock %}
+
+
