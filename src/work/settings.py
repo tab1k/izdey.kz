@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-b^2pq1l-ve*mxggrps$xy!$!80%=+ym6tx$kk++9_q3)hrd#y-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', 'localhost', '8000', '0.0.0.0:8000']
+ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost', '8000', '0.0.0.0:8000']
 
 # Application definition
 
@@ -102,13 +102,17 @@ TEMPLATES = [
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'izdey_db',  # Имя базы данных
+    #     'USER': 'tab1k',     # Имя пользователя
+    #     'PASSWORD': 'TOBI8585',  # Пароль
+    #     'HOST': 'db',        # Имя сервиса базы данных в Docker Compose
+    #     'PORT': '5432',      # Порт PostgreSQL
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'izdey_db',  # Имя базы данных
-        'USER': 'tab1k',     # Имя пользователя
-        'PASSWORD': 'TOBI8585',  # Пароль
-        'HOST': 'db',        # Имя сервиса базы данных в Docker Compose
-        'PORT': '5432',      # Порт PostgreSQL
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -202,14 +206,12 @@ CACHES = {
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

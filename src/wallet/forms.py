@@ -12,7 +12,7 @@ class TransferForm(forms.Form):
         max_length=150,
         label='Номер пользователя',
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
+            'class': 'formkz-control',
             'placeholder': 'Номер телефона получателя',
             'value': '+7 (',  # Начальное значение поля с префиксом +7 и открывающей скобкой
             'oninput': """if (!this.value.startsWith('+7 (')) {
@@ -34,13 +34,13 @@ class TransferForm(forms.Form):
         decimal_places=2,
         label='Сумма',
         widget=forms.NumberInput(attrs={
-            'class': 'form-control',
+            'class': 'formkz-control',
             'placeholder': 'Введите сумму'
         })
     )
     description = forms.CharField(
         widget=forms.Textarea(attrs={
-            'class': 'form-control',
+            'class': 'formkz-control',
             'rows': 3,
             'placeholder': 'Введите описание (необязательно)'
         }),

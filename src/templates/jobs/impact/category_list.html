@@ -26,31 +26,59 @@
 
 <section class="job-categories" style="padding-top: 40px; padding-bottom: 10px;">
     <div class="auto-container">
-        <form method="get" action=".">
-            <div class="d-flex mb-3 form-group col-lg-6 col-md-12">
+        <form method="GET" class="mb-5" action=".">
+            <div class="input-group col-lg-6 col-md-12">
                 {{ search_form.query }}
-                <button type="submit" class=" align-items-center btn-style-one bg-blue"
-                        style="margin-left: 5px; background-color: #34A853;">Поиск
+                <button type="submit" class="btn btn-light border-0"
+                        style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: none;">
+                    <i class="fi fi-rr-search"></i>
                 </button>
             </div>
         </form>
+
         <div class="row wow fadeInUp animated animated" style="margin-top: 30px;">
             {% for c in categories %}
             <div class="category-block-two at-home20">
                 <a href="{% url 'jobs:category-detail' pk=c.pk %}">
-                    <div class="inner-box">
+                    <div class="inner-box" style="height: 190px;">
                         <div class="content">
-                            <h4><a href="{% url 'jobs:category-detail' pk=c.pk %}">{{ c.name }}</a></h4>
+                            <!-- Иконка сверху -->
+                            <i style="color: green;" class="{{ c.icon }}"></i>
+                            <h4>
+                                <a href="{% url 'jobs:category-detail' pk=c.pk %}">
+                                    {{ c.name }}
+                                </a>
+                            </h4>
                         </div>
                     </div>
                 </a>
             </div>
             <style>
+                .content {
+                    gap: 5px;
+                    padding: inherit;
+                }
+
+                .category-block-two .inner-box .content {
+                    text-align: center; /* Центрируем контент */
+                }
+
+                .category-block-two .inner-box .content i {
+                    font-size: 40px; /* Размер иконки */
+                    margin-bottom: 10px; /* Расстояние между иконкой и названием */
+                    display: block; /* Иконка на отдельной строке */
+                }
+
                 .category-block-two.at-home20:hover .inner-box {
                     background: #1eb81e;
                     box-shadow: 0px 6px 15px 0px rgba(64, 79, 104, 0.05);
                 }
             </style>
+            {% empty %}
+            <div class="container text-center mb-5 mt-5">
+                <img style="height: 200px; margin-bottom: 50px;" src="{% static 'images/none.webp' %}" alt="">
+                <p>Категории не найдены.</p>
+            </div>
             {% endfor %}
             <!-- Category Block -->
             <div class="w-100 d-md-none"></div> <!-- Clearfix on mobile -->

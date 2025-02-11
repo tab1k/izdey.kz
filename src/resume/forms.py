@@ -7,15 +7,15 @@ class ResumeForm(forms.ModelForm):
         model = Resume
         fields = ['title', 'category', 'about', 'education', 'vuz', 'experience', 'skills', 'phone_number', 'email', 'active']
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'category': forms.Select(attrs={'class': 'form-control'}),
-            'about': forms.Textarea(attrs={'class': 'form-control'}),
-            'education': forms.Select(attrs={'class': 'form-control'}),
-            'vuz': forms.TextInput(attrs={'class': 'form-control'}),
-            'experience': forms.Select(attrs={'class': 'form-control'}),
-            'skills': forms.Textarea(attrs={'class': 'form-control'}),
-            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'title': forms.TextInput(attrs={'class': 'formkz-control'}),
+            'category': forms.Select(attrs={'class': 'formkz-control'}),
+            'about': forms.Textarea(attrs={'class': 'formkz-control'}),
+            'education': forms.Select(attrs={'class': 'formkz-control'}),
+            'vuz': forms.TextInput(attrs={'class': 'formkz-control'}),
+            'experience': forms.Select(attrs={'class': 'formkz-control'}),
+            'skills': forms.Textarea(attrs={'class': 'formkz-control'}),
+            'phone_number': forms.TextInput(attrs={'class': 'formkz-control'}),
+            'email': forms.EmailInput(attrs={'class': 'formkz-control'}),
         }
 
     def __init__(self, *args, **kwargs):

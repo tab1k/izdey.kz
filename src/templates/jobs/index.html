@@ -20,7 +20,7 @@
             <div class="">
                 <a href="#">
                     <img style="border-radius: 15px;" src="{% static 'images/yandex-banner.png' %}" class="card-img-top"
-                     alt="banner-0">
+                         alt="banner-0">
                 </a>
             </div>
         </div>
@@ -33,7 +33,7 @@
             <div class="">
                 <a href="#">
                     <img style="border-radius: 15px;" src="{% static 'images/banner.png' %}" class="card-img-top"
-                     alt="banner-0">
+                         alt="banner-0">
                 </a>
             </div>
         </div>
@@ -48,7 +48,7 @@
                 <div class="inner-box">
                     <div class="content">
                         <a href="{% url 'jobs:category-list' %}">
-                            <span class="icon"><i style="color: #03b003;" class="fi fi-rr-list-check"></i></span>
+                            <span class="icon"><i style="color: #03b003;" class="fi fi-rr-apps"></i></span>
                         </a>
                         <h4><a href="#">Категории</a></h4>
                     </div>
@@ -58,7 +58,7 @@
                 <div class="inner-box">
                     <div class="content">
                         <a href="{% url 'jobs:vacancy-list' %}">
-                            <span class="icon"><i style="color: #03b003;"  class="fi fi-rr-briefcase"></i></span>
+                            <span class="icon"><i style="color: #03b003;" class="fi fi-rr-briefcase"></i></span>
                         </a>
                         <h4><a href="#">Вакансии</a></h4>
                     </div>
@@ -68,7 +68,7 @@
                 <div class="inner-box">
                     <div class="content">
                         <a href="{% url 'jobs:service-list' %}">
-                            <span class="icon"><i style="color: #03b003;"  class="fi fi-rr-users"></i></span>
+                            <span class="icon"><i style="color: #03b003;" class="fi fi-rr-users"></i></span>
                         </a>
                         <h4><a href="#">Услуги</a></h4>
                     </div>
@@ -78,9 +78,9 @@
                 <div class="inner-box">
                     <div class="content">
                         <a href="{% url 'rooms:room-list' %}">
-                            <span class="icon"><i style="color: #03b003;"  class="fi fi-rr-volume"></i></span>
+                            <span class="icon"><i style="color: #03b003;" class="fi fi-rr-plane-alt"></i></span>
                         </a>
-                        <h4><a href="#">Комнаты</a></h4>
+                        <h4><a href="#">W & T</a></h4>
                     </div>
                 </div>
             </div>
@@ -135,7 +135,7 @@
 </style>
 
 
-<section class="ls-section" style="border: none;">
+<section class="ls-section" style="border: none; padding: 20px 0 100px;">
     <div class="auto-container">
         <div class="filters-backdrop"></div>
 
@@ -171,20 +171,7 @@
                                 </div>
                             </div>
 
-                            <!-- Filter Block -->
-                            <div class="filter-block">
-                                <h4>От</h4>
-                                <div class="form-group">
-                                    {{ filter.form.date_posted__gte }}
-                                </div>
-                            </div>
 
-                            <div class="filter-block">
-                                <h4>До</h4>
-                                <div class="form-group">
-                                    {{ filter.form.date_posted__lte }}
-                                </div>
-                            </div>
 
                             <div class="filter-block">
                                 <h4>Оплата от</h4>
@@ -200,7 +187,9 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="theme-btn btn-style-one bg-blue mb-4">Применить</button>
+                            <button type="submit" class="theme-btn btn-style-one bg-blue mb-4"
+                                    style="background-color: #34A853;">Применить
+                            </button>
                         </div>
                     </form>
                     <!-- END FORM -->
@@ -221,7 +210,7 @@
                 </div>
             </div>
             <style>
-                /* Скрыть элемент на мобильных устройствах и показать на экранах medium и выше */
+
                 @media (max-width: 767px) {
                     .filters-column {
                         display: none;
@@ -235,12 +224,242 @@
             <div class="content-column col-lg-8 col-md-12 col-sm-12">
                 <div class="ls-outer">
 
-                    <!-- ls Switcher -->
-                    <div class="ls-switcher">
-                        <div class="showing-result">
-                            <div class="text">Показано <strong>{{ filter.qs.count }}</strong> результатов.</div>
+                    <div class="container d-flex" style="justify-content: end; gap: 10px;">
+                        <div class="theme-btn btn-style-one mb-4" style="background-color: #34A853; height: 45px;">
+                            <button style="color: white;">Call-Центр</button>
+                        </div>
+                        <div class="theme-btn btn-style-one mb-4" style="background-color: #34A853; height: 45px;">
+                            <a href="{% url 'jobs:vacancy-create' %}" style="color: white;">Создать вакансию</a>
                         </div>
                     </div>
+
+                    <style>
+                        @media (max-width: 992px) {
+                            .container.d-flex {
+                                display: none !important;
+                            }
+                        }
+
+                        @media (max-width: 768px) {
+                            .container.d-flex {
+                                display: none !important;
+                            }
+                        }
+
+                        @media (max-width: 480px) {
+                            .container.d-flex {
+                                display: none !important;
+                            }
+                        }
+                    </style>
+
+
+                    <!-- Кнопка вызова фильтров -->
+                    <div class="ls-switcher d-flex">
+                        <div class="showing-result" style="justify-content: space-between;">
+                            <div class="text">Показано <strong>{{ filter.qs.count }}</strong> результатов.</div>
+                            <span style="color: green;" onclick="openSidebar()"
+                                  class="mobile-sidebar-btn d-lg-none d-md-none d-xl-none">
+                                <i style="color: green;" class="fas fa-sliders-h"></i> Фильтры
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Полноэкранное окно с фильтрами -->
+                    <div id="sidebar" class="sidebar">
+                        <div class="sidebar-content">
+                            <span class="close-btn" onclick="closeSidebar()">&times;</span>
+                            <h2 onclick="closeSidebar()">Фильтры</h2>
+
+                            <form class="form-search filter-listing-form-wrapper mt-3 mb-3" method="GET">
+                                {% csrf_token %}
+
+                                <div class="filter-listing-form vertical ">
+                                    <div class="main-inner clearfix">
+                                        <div class="content-main-inner">
+                                            <div class="row">
+
+                                                <div class=" col-xs-12 col-md-12 has-border">
+                                                    <div class="form-group form-group-title ">
+                                                        <label class="heading-label">
+                                                            Ищите по названию </label>
+                                                        <div class="form-group-inner inner has-icon">
+                                                            <i class="flaticon-magnifiying-glass"></i>
+                                                            {{ filter.form.title }}
+                                                        </div>
+                                                    </div><!-- /.form-group -->
+                                                </div>
+
+
+                                                <div class="col-xs-12 col-md-12 has-border">
+                                <div class="form-group form-group-title">
+                                    <label class="heading-label">Категория</label>
+                                    <div class="form-group-inner inner has-icon">
+                                        <i class="flaticon-magnifiying-glass"></i>
+                                        <select name="category" class="formkz-control selectpicker" data-live-search="true">
+                                            <option value="">Выберите категорию</option>
+                                            {% for category in filter.form.category.field.queryset %}
+                                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                                                <div class="col-xs-12 col-md-12 has-border">
+                                                    <div class="form-group form-group-center-location  ">
+                                                        <label class="heading-label">
+                                                            Местоположение </label>
+                                                        <div class="form-group-inner inner has-icon">
+                                                            <i class="flaticon-location"></i>
+                                                            <div class="action-location">
+                                                                {{ filter.form.location }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex align-items-center">
+                                                    <div class="col-md-6 col-12 has-border">
+                                                        <div class="form-group form-group-center-location">
+                                                            <label class="heading-label">Оплата от</label>
+                                                            <div class="form-group-inner inner has-icon">
+                                                                <i class="flaticon-location"></i>
+                                                                <div class="action-location">
+                                                                    {{ filter.form.pay_rate__gte }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label class="heading-label">Оплата до</label>
+                                                            <div class="form-group-inner">
+                                                                 {{ filter.form.pay_rate__lte }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <style>
+                                                    .col-md-6.col-12.has-border {
+                                                        width: 48%;
+                                                    }
+                                                    .col-md-6.col-12 {
+                                                        width: 48%;
+                                                    }
+                                                    .d-flex.align-items-center {
+                                                        gap: 16px;
+                                                    }
+                                                </style>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <button type="submit" class="theme-btn btn-style-one bg-blue mb-4 mt-3"
+                                    style="background-color: #34A853;">Применить
+                                </button>
+                            </form>
+
+
+                        </div>
+                    </div>
+
+                    <style>
+                        .sidebar {
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background: rgba(0, 0, 0, 0.5);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            opacity: 0;
+                            visibility: hidden;
+                            transition: opacity 0.3s ease, visibility 0.3s ease;
+                            z-index: 1000;
+                        }
+
+                        .sidebar-content {
+                            background: white;
+                            width: 100%;
+                            height: 100%;
+                            padding: 20px;
+                            border-radius: 0;
+                            box-shadow: none;
+                            transform: translateY(100%);
+                            transition: transform 0.3s ease;
+                            overflow-y: auto;
+                        }
+
+                        .sidebar.active {
+                            opacity: 1;
+                            visibility: visible;
+                        }
+
+                        .sidebar.active .sidebar-content {
+                            transform: translateY(0);
+                        }
+
+                        .close-btn {
+                            position: absolute;
+                            top: 20px;
+                            right: 20px;
+                            font-size: 30px;
+                            cursor: pointer;
+                        }
+
+                        .filters {
+                            padding: 20px;
+                        }
+
+                        .filter-group {
+                            margin-bottom: 20px;
+                        }
+
+                        .filter-group h3 {
+                            margin-bottom: 10px;
+                        }
+
+                        .apply-filters {
+                            width: 100%;
+                            padding: 15px;
+                            background: green;
+                            color: white;
+                            border: none;
+                            font-size: 16px;
+                            cursor: pointer;
+                            border-radius: 5px;
+                            margin-top: 20px;
+                        }
+
+                        .apply-filters:hover {
+                            background: darkgreen;
+                        }
+                    </style>
+
+                    <script>
+                        function openSidebar() {
+                            document.getElementById("sidebar").classList.add("active");
+                        }
+
+                        function closeSidebar() {
+                            document.getElementById("sidebar").classList.remove("active");
+                        }
+
+                        // Закрытие при клике вне области
+                        document.getElementById("sidebar").addEventListener("click", function(event) {
+                            if (event.target === this) {
+                                closeSidebar();
+                            }
+                        });
+                    </script>
 
 
                     {% for j in jobs %}
@@ -251,7 +470,8 @@
                                 <span class="company-logo">
                                   {% if j.employer.profile.company_profile and j.employer.profile.company_profile.logo %}
                                     <a href="{% url 'jobs:vacancy-detail' pk=j.pk %}">
-                                      <img style="border-radius: 5px;" src="{{ j.employer.profile.company_profile.logo.url }}"
+                                      <img style="border-radius: 5px;"
+                                           src="{{ j.employer.profile.company_profile.logo.url }}"
                                            alt="">
                                     </a>
                                   {% else %}
@@ -264,7 +484,8 @@
                                 <h4><a href="{% url 'jobs:vacancy-detail' pk=j.pk %}">{{ j.title }}</a></h4>
                                 <ul class="job-info">
                                     {% if j.employer.profile.company_profile %}
-                                    <li><span class="icon flaticon-briefcase"></span>{{ j.employer.profile.company_profile.name }}
+                                    <li><span class="icon flaticon-briefcase"></span>{{
+                                        j.employer.profile.company_profile.name }}
                                     </li>
                                     {% endif %}
                                     <li><span class="icon flaticon-map-locator"></span> {{ j.get_location_display }}
@@ -274,7 +495,7 @@
                                 </ul>
                                 <ul class="job-other-info">
                                     {% if j.time_count == 'full' %}
-                                    <li class="privacy" >Полная занятость</li>
+                                    <li class="privacy">Полная занятость</li>
                                     {% elif j.time_count == 'part' %}
                                     <li class="time">Договорная занятость</li>
                                     {% else %}
@@ -294,6 +515,11 @@
                             </form>
 
                         </div>
+                    </div>
+                    {% empty %}
+                    <div class="container text-center mb-5 mt-5">
+                        <img style="height: 200px; margin-bottom: 50px;" src="{% static 'images/none.webp' %}" alt="">
+                        <p>Вакансии не найдены.</p>
                     </div>
                     {% endfor %}
                 </div>

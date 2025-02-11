@@ -140,46 +140,27 @@ class EmployerRequestForm(forms.ModelForm):
         }
 
 
-class UserForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'email']
-        widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
-        }
-
-    def __init__(self, *args, **kwargs):
-        # Необходимо получить пользователя, если он есть
-        user = kwargs.pop('user', None)
-        super().__init__(*args, **kwargs)
-        self.user = user
-
-        # Убедитесь, что поле phone_number не редактируется
-        if self.user:
-            self.fields['phone_number'].widget.attrs['readonly'] = True
 
 
 class UserForm(forms.ModelForm):
     first_name = forms.CharField(
         max_length=30,
         required=True,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя'}),
+        widget=forms.TextInput(attrs={'class': 'formkz-control', 'placeholder': 'Имя'}),
         label='Имя'
     )
 
     last_name = forms.CharField(
         max_length=30,
         required=True,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Фамилия'}),
+        widget=forms.TextInput(attrs={'class': 'formkz-control', 'placeholder': 'Фамилия'}),
         label='Фамилия'
     )
 
     email = forms.EmailField(
         max_length=30,
         required=True,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
+        widget=forms.TextInput(attrs={'class': 'formkz-control', 'placeholder': 'Email'}),
         label='Email'
     )
 
@@ -187,13 +168,15 @@ class UserForm(forms.ModelForm):
         max_length=25,
         required=True,
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': 'Телефонный номер', 'pattern': r'\+7[0-9]{10}'}),
+            attrs={'class': 'formkz-control', 'placeholder': 'Телефонный номер', 'pattern': r'\+7[0-9]{10}'}),
         label='Номер телефона'
     )
 
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'phone_number', 'email']
+
+
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get('phone_number')
@@ -215,25 +198,25 @@ class UserProfileForm(forms.ModelForm):
 
     about = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'О себе', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'formkz-control', 'placeholder': 'О себе', 'rows': 3}),
         label='Подробнее'
     )
 
     website_link = forms.URLField(
         required=False,
-        widget=forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'Ссылка на сайт'}),
+        widget=forms.URLInput(attrs={'class': 'formkz-control', 'placeholder': 'Ссылка на сайт'}),
         label='Вебсайт'
     )
 
     location = forms.ChoiceField(
         choices=UserProfile.LOCATION_CHOICES,
-        widget=forms.Select(attrs={'class': 'form-control'}),
+        widget=forms.Select(attrs={'class': 'formkz-control'}),
         label='Город'
     )
 
     language = forms.ChoiceField(
         choices=UserProfile.LANGUAGE_CHOICES,
-        widget=forms.Select(attrs={'class': 'form-control'}),
+        widget=forms.Select(attrs={'class': 'formkz-control'}),
         label='Язык'
     )
 
@@ -304,7 +287,7 @@ class CustomPasswordChangeForm(PasswordChangeForm):
 
         # Добавляем класс form-control ко всем полям
         for field in self.fields:
-            self.fields[field].widget.attrs.update({'class': 'form-control'})
+            self.fields[field].widget.attrs.update({'class': 'formkz-control'})
 
     def clean_new_password1(self):
         new_password1 = self.cleaned_data.get('new_password1')

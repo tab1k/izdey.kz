@@ -18,6 +18,9 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <!-- Bootstrap Select -->
+
+
 
     <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
     <link rel="icon" href="{% static 'favicon.png' %}" type="image/x-icon">
@@ -37,6 +40,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 </head>
 
 <body>
@@ -45,11 +50,11 @@
 
 
     <!-- Preloader -->
-    <!--    <div id="preloader">-->
-    <!--        <div class="progress-bar">-->
-    <!--            <div class="progress"></div>-->
-    <!--        </div>-->
-    <!--    </div>-->
+    <div id="preloader">
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+    </div>
 
     <!-- Стили -->
     <style>
@@ -129,24 +134,6 @@
                             <a href="{% url 'wallet:info' %}" class="ajax-link"><span>Кошелек</span></a>
                         </li>
 
-
-                        <!-- Only for Mobile View -->
-                        <li class="mm-add-listing">
-                            <a href="add-listing.html" class="theme-btn btn-style-one">Job Post</a>
-                            <span>
-                  <span class="contact-info">
-                    <span class="phone-num"><span>Call us</span><a href="tel:1234567890">123 456 7890</a></span>
-                <span class="address">329 Queensberry Street, North Melbourne VIC <br>3051, Australia.</span>
-                <a href="mailto:support@superio.com" class="email">support@superio.com</a>
-                </span>
-                <span class="social-links">
-                    <a href="#"><span class="fab fa-facebook-f"></span></a>
-                <a href="#"><span class="fab fa-twitter"></span></a>
-                <a href="#"><span class="fab fa-instagram"></span></a>
-                <a href="#"><span class="fab fa-linkedin-in"></span></a>
-                </span>
-                </span>
-                        </li>
                     </ul>
                 </nav>
                 <!-- Main Menu End-->
@@ -442,7 +429,7 @@
         <ul class="navbar-nav">
             <!-- Nav item Home -->
             <li class="nav-item">
-                <a class="nav-link ajax-link" style="color: green;" href="{% url 'jobs:home' %}">
+                <a class="nav-link" style="color: green;" href="{% url 'jobs:home' %}">
                     <i class="fi-rr-home"></i>
                     <span class="mb-0 nav-text">Главная</span>
                 </a>
@@ -450,7 +437,7 @@
 
 
             <li class="nav-item">
-                <a class="nav-link ajax-link"
+                <a class="nav-link"
                    href="{% url 'myaccount:responses' %}">
                     <i class="fi fi-rr-envelope-plus"></i>
                     <span class="mb-0 nav-text">Отклики</span>
@@ -461,7 +448,7 @@
             <li class="nav-item">
                 {% if user.is_authenticated %}
                 {% if user.profile.account_type == 'employer' %}
-                <a class="nav-link ajax-link" href="{% url 'jobs:vacancy-create' %}">
+                <a class="nav-link" href="{% url 'jobs:vacancy-create' %}">
                     <i class="fi fi-rr-add"></i>
                     <span class="mb-0 nav-text">Создать</span>
                 </a>
@@ -472,7 +459,7 @@
                 </a>
                 {% endif %}
                 {% else %}
-                <a class="nav-link ajax-link"
+                <a class="nav-link"
                    href="{% url 'users:signin' %}">
                     <i class="fi fi-rr-add"></i>
                     <span class="mb-0 nav-text">Создать</span>
@@ -483,13 +470,13 @@
             <!-- Nav item Favorites -->
             <li class="nav-item">
                 {% if user.is_authenticated %}
-                <a class="nav-link ajax-link"
+                <a class="nav-link"
                    href="{% url 'favorites:favorites-list' %}">
                     <i class="fi fi-rr-heart"></i>
                     <span class="mb-0 nav-text">Избранное</span>
                 </a>
                 {% else %}
-                <a class="nav-link ajax-link">
+                <a class="nav-link">
                     <i class="fi fi-rr-heart"></i>
                     <span class="mb-0 nav-text">Избранное</span>
                 </a>
@@ -499,13 +486,13 @@
             <!-- Nav item Account -->
             <li class="nav-item">
                 {% if user.is_authenticated %}
-                <a class="nav-link ajax-link"
+                <a class="nav-link"
                    href="{% url 'myaccount:settings' %}">
                     <i class="fi fi-rr-circle-user"></i>
                     <span class="mb-0 nav-text">Аккаунт</span>
                 </a>
                 {% else %}
-                <a class="nav-link ajax-link"
+                <a class="nav-link"
                    href="{% url 'users:signin' %}">
                     <i class="fi fi-rr-circle-user"></i>
                     <span class="mb-0 nav-text">Войти</span>
@@ -581,7 +568,7 @@
 
 
     <!-- Main Footer -->
-    <footer class="main-footer alternate5">
+    <footer class="main-footer alternate5 mb-5">
         <div class="auto-container">
             <!--Widgets Section-->
             <div class="widgets-section">
@@ -686,6 +673,7 @@
 
     <!-- End Main Footer -->
 
+
 </div>
 <!-- End Page Wrapper -->
 
@@ -705,38 +693,6 @@
 <script src="{% static 'js/wow.js' %}"></script>
 <script src="{% static 'js/script.js' %}"></script>
 
-<!--<script>-->
-<!--    function loadContent(url) {-->
-<!--  console.log('Loading content from:', url); // Логируем URL-->
-<!--  $.ajax({-->
-<!--    url: url,-->
-<!--    method: 'GET',-->
-<!--    success: function(data) {-->
-<!--      $('#main-content').html(data.html);-->
-<!--    },-->
-<!--    error: function(xhr, status, error) {-->
-<!--      console.error('Ошибка загрузки данных:', status, error); // Логируем ошибку-->
-<!--    }-->
-<!--  });-->
-<!--}-->
-
-
-<!--    $(document).ready(function () {-->
-<!--        // Обработчики кликов на ссылки-->
-<!--        $('a.ajax-link').on('click', function (e) {-->
-<!--            e.preventDefault();-->
-<!--            const url = $(this).attr('href');-->
-<!--            loadContent(url);-->
-<!--        });-->
-
-<!--        // Загружаем контент при загрузке страницы-->
-<!--        if (window.location.pathname !== '/') {-->
-<!--            loadContent(window.location.pathname);-->
-<!--        }-->
-<!--    });-->
-
-
-<!--</script>-->
 
 </body>
 

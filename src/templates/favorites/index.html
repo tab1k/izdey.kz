@@ -15,7 +15,7 @@
     </div>
 </section>
 
-<section class="cart-section">
+<section class="cart-section" style="padding: 20px 0px 50px;">
     <div class="auto-container">
         <div class="row">
             <div class="col-lg-12">
@@ -26,10 +26,11 @@
 
                         <div class="widget-content">
                             <form method="GET" class="mb-5" action="{% url 'favorites:favorites-list' %}">
-                                <div class="d-flex mb-3 form-group col-lg-6 col-md-12">
+                                <div class="input-group col-lg-6 col-md-12">
                                     {{ search_form.query }}
-                                    <button type="submit" class=" align-items-center btn-style-one bg-blue"
-                                            style="margin-left: 5px; background-color: #34A853;">Поиск
+                                    <button type="submit" class="btn btn-light border-0"
+                                            style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: none;">
+                                        <i class="fi fi-rr-search"></i>
                                     </button>
                                 </div>
                             </form>
@@ -97,6 +98,7 @@
                                             {% endfor %}
                                             {% else %}
                                             <div class="container text-center" style="margin-top: 20px;">
+                                                <img style="height: 300px; margin-bottom: 50px;" src="{% static 'images/none.webp' %}" alt="">
                                                 <p>Вы еще не добавили ничего в избранное.</p>
                                             </div>
                                             {% endif %}

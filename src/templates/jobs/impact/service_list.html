@@ -16,7 +16,7 @@
 <!--End Page Title-->
 
 <!-- Listing Section -->
-<section class="ls-section" style="border: none;">
+<section class="ls-section" style="border: none; padding: 20px 0;">
     <div class="auto-container">
         <div class="filters-backdrop"></div>
 
@@ -57,22 +57,6 @@
                                 </div>
                             </div>
 
-                            <!-- Filter Block -->
-                            <div class="filter-block">
-                                <h4>От</h4>
-                                <div class="form-group">
-                                    {{ filter.form.date_posted__gte }}
-                                    <span class="icon flaticon-briefcase"></span>
-                                </div>
-                            </div>
-
-                            <div class="filter-block">
-                                <h4>До</h4>
-                                <div class="form-group">
-                                    {{ filter.form.date_posted__lte }}
-                                    <span class="icon flaticon-briefcase"></span>
-                                </div>
-                            </div>
 
                             <div class="filter-block">
                                 <h4>Оплата от</h4>
@@ -105,8 +89,11 @@
 
                     <!-- ls Switcher -->
                     <div class="ls-switcher">
-                        <div class="showing-result">
-                            <div class="text">Показано <strong>{{ services.count }}</strong> результатов.</div>
+                        <div class="showing-result" style="justify-content: space-between;">
+                            <div class="text">Показано <strong>{{ filter.qs.count }}</strong> результатов.</div>
+                            <a style="color: green;" href="javascript:void(0)" class="mobile-sidebar-btn d-lg-none d-md-none d-xl-none">
+                                <i style="color: green;" class="fas fa-sliders-h"></i> Фильтры
+                            </a>
                         </div>
                     </div>
 
@@ -167,6 +154,11 @@
 
                             </div>
                         </div>
+                    </div>
+                    {% empty %}
+                    <div class="container text-center mb-5 mt-5">
+                        <img style="height: 200px; margin-bottom: 50px;" src="{% static 'images/none.webp' %}" alt="">
+                        <p>Услуги не найдены.</p>
                     </div>
                     {% endfor %}
 

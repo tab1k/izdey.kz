@@ -17,7 +17,7 @@
 <!-- End Page Title -->
 
 <!-- Listing Section -->
-<section class="ls-section">
+<section class="ls-section" style="padding: 20px 0;">
     <div class="auto-container">
         <div class="filters-backdrop"></div>
 
@@ -47,24 +47,6 @@
                                 <div class="form-group">
                                     {{ filter.form.location }}
                                     <span class="icon flaticon-map-locator"></span>
-                                </div>
-                            </div>
-
-                            <!-- Filter Block -->
-                            <div class="d-flex">
-                                <div class="filter-block">
-                                    <h4>От</h4>
-                                    <div class="form-group">
-                                        {{ filter.form.date_posted__gte }}
-                                    </div>
-                                </div>
-
-                                <!-- Filter Block -->
-                                <div class="filter-block">
-                                    <h4>До</h4>
-                                    <div class="form-group">
-                                        {{ filter.form.date_posted__lte }}
-                                    </div>
                                 </div>
                             </div>
 
@@ -105,7 +87,9 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="theme-btn btn-style-one mb-4" style="background-color: #34A853;">Применить</button>
+                            <button type="submit" class="theme-btn btn-style-one mb-4"
+                                    style="background-color: #34A853;">Применить
+                            </button>
 
                         </div>
                     </form>
@@ -114,16 +98,19 @@
                 </div>
             </div>
 
+
             <!-- Content Column -->
             <div class="content-column col-lg-8 col-md-12 col-sm-12">
                 <div class="ls-outer">
 
                     <!-- ls Switcher -->
                     <div class="ls-switcher">
-                        <div class="showing-result">
-                            <div class="text">Показано <strong>{{ jobs.count }}</strong> результатов.</div>
+                        <div class="showing-result" style="justify-content: space-between;">
+                            <div class="text">Показано <strong>{{ filter.qs.count }}</strong> результатов.</div>
+                            <a style="color: green;" href="javascript:void(0)" class="mobile-sidebar-btn d-lg-none d-md-none d-xl-none">
+                                <i style="color: green;" class="fas fa-sliders-h"></i> Фильтры
+                            </a>
                         </div>
-
                     </div>
 
                     <!-- Job Block -->
@@ -135,17 +122,20 @@
                                   {% if j.employer.profile.company_profile.logo %}
                                     <!-- Если есть логотип компании -->
                                     <a href="{% url 'jobs:vacancy-detail' pk=j.pk %}">
-                                      <img style="border-radius: 5px;" src="{{ j.employer.profile.company_profile.logo.url }}" alt="Company Logo">
+                                      <img style="border-radius: 5px;"
+                                           src="{{ j.employer.profile.company_profile.logo.url }}" alt="Company Logo">
                                     </a>
                                   {% elif j.employer.profile.image %}
                                     <!-- Если нет логотипа компании, но есть фото профиля -->
                                     <a href="{% url 'jobs:vacancy-detail' pk=j.pk %}">
-                                      <img style="border-radius: 5px;" src="{{ j.employer.profile.image.url }}" alt="Profile Image">
+                                      <img style="border-radius: 5px;" src="{{ j.employer.profile.image.url }}"
+                                           alt="Profile Image">
                                     </a>
                                   {% else %}
                                     <!-- Если нет ни логотипа компании, ни фото профиля -->
                                     <a href="{% url 'jobs:vacancy-detail' pk=j.pk %}">
-                                      <img style="border-radius: 5px;" src="{% static 'images/favicon.png' %}" alt="Default Image">
+                                      <img style="border-radius: 5px;" src="{% static 'images/favicon.png' %}"
+                                           alt="Default Image">
                                     </a>
                                   {% endif %}
                                 </span>
@@ -153,7 +143,8 @@
                                 <h4><a href="{% url 'jobs:vacancy-detail' pk=j.pk %}">{{ j.title }}</a></h4>
                                 <ul class="job-info">
                                     {% if j.employer.profile.company_profile %}
-                                    <li><span class="icon flaticon-briefcase"></span>{{ j.employer.profile.company_profile.name }}
+                                    <li><span class="icon flaticon-briefcase"></span>{{
+                                        j.employer.profile.company_profile.name }}
                                     </li>
                                     {% endif %}
                                     <li><span class="icon flaticon-map-locator"></span> {{ j.get_location_display }}
@@ -163,7 +154,8 @@
                                     <li><span class="icon flaticon-money"></span> {{ j.pay_rate }} тенге</li>
                                 </ul>
                                 <ul class="job-other-info">
-                                    <li class="time" style="background: rgba(52, 168, 83, 0.15);"><a style="color: #34A853;">{{ j.get_time_count_display }}</a></li>
+                                    <li class="time" style="background: rgba(52, 168, 83, 0.15);"><a
+                                            style="color: #34A853;">{{ j.get_time_count_display }}</a></li>
                                 </ul>
                                 <form action="{% url 'jobs:add_to_favorites' job_id=j.pk %}" method="post">
                                     {% csrf_token %}
@@ -179,7 +171,13 @@
                             </div>
                         </div>
                     </div>
+                    {% empty %}
+                    <div class="container text-center mb-5 mt-5">
+                        <img style="height: 200px; margin-bottom: 50px;" src="{% static 'images/none.webp' %}" alt="">
+                        <p>Вакансии не найдены.</p>
+                    </div>
                     {% endfor %}
+
 
                     <!-- Listing Show More -->
                     <nav class="ls-pagination">

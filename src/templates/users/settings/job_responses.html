@@ -140,7 +140,8 @@
             </div>
             {% endfor %}
             {% else %}
-            <div class="container text-center" style="margin-top: 30px;">
+            <div class="container text-center mt-5 mb-5">
+                <img style="height: 300px; margin-bottom: 50px;" src="{% static 'images/none.webp' %}" alt="">
                 <p>На ваши вакансии еще нет откликов.</p>
             </div>
             {% endif %}
@@ -195,7 +196,8 @@
 
             {% endfor %}
             {% else %}
-            <div class="container text-center" style="margin-top: 20px;">
+            <div class="container text-center mt-5 mb-5">
+                <img style="height: 200px; margin-bottom: 50px;" src="{% static 'images/none.webp' %}" alt="">
                 <p>Вы еще не откликнулись ни на одну вакансию.</p>
             </div>
             {% endif %}

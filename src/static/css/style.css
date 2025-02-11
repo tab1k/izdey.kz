@@ -160,6 +160,73 @@ button {
   min-width: auto;
 }
 
+.link-back {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 16px;
+    padding: 8px 8px 6px;
+    padding-left: 28px;
+    color: #262a31;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .01em;
+    text-transform: uppercase;
+    background-color: #f5f7f8;
+    border-radius: 8px;
+    position: relative;
+    line-height: 13px;
+}
+
+.formkz-control {
+    position: relative;
+    width: 100%;
+    display: block;
+    color: #5c6770;
+    font-size: 14px;
+    line-height: 30px;
+    padding: 10px 18px;
+    height: 45px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #ced4da;
+    transition: all 300ms ease;
+}
+
+input#id_query {
+    border-radius: 10px;
+}
+
+a.theme-btn.btn-style-one.bg-blue.mb-4.mt-3 {
+    padding: 10px;
+}
+
+button.theme-btn.btn-style-one {
+    padding: 10px;
+}
+
+a.link-back.link-back-mb.d-lg-none {
+    color: black;
+    margin-bottom: 0px;
+}
+
+@media (max-width: 768px) {
+    .filters-column.col-lg-4.col-md-12.col-sm-12 {
+        display: none;
+    }
+}
+
+
+.link-back:before {
+    content: "";
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    left: 8px;
+    width: 16px;
+    height: 16px;
+    background: url(../images/arrow-left.svg);
+}
+
 p,
 .text {
   font-size: 15px;
@@ -2370,7 +2437,7 @@ Buttons Styles
   line-height: 20px;
   border-radius: 8px;
   font-weight: 400;
-  padding: 18px 35px 15px 35px;
+
 }
 .btn-style-one i,
 .btn-style-three i{
@@ -4866,7 +4933,6 @@ Chat Widget
   position: relative;
   background: #ffffff;
   border-radius: 8px;
-  box-shadow: 0px 6px 15px rgba(64, 79, 104, 0.05);
   margin-bottom: 30px;
 }
 
@@ -5245,7 +5311,7 @@ Main Footer
 .main-footer .footer-bottom {
   position: relative;
   width: 100%;
-  padding: 36px 0;
+  padding: 36px 0px 50px 0px;
   text-align: center;
   border-top: 1px solid #ECEDF2;
   min-height: 100px;
@@ -6736,7 +6802,7 @@ Job Categories
   background: #FFFFFF;
   border: 1px solid #ECEDF2;
   border-radius: 8px;
-  padding: 40px 20px;
+  padding: 25px 20px;
   text-align: center;
   transition: all 300ms ease;
 }
@@ -7032,7 +7098,7 @@ Job Section
 
 .job-block .inner-box {
   position: relative;
-  padding: 32px 20px 22px 30px;
+  padding: 10px 30px 10px 30px;
   background: #FFFFFF;
   border: 1px solid #ECEDF2;
   box-sizing: border-box;
@@ -8669,7 +8735,6 @@ Login Popup
 }
 
 #login-modal {
-  max-width: 500px;
   padding: 30px 40px 20px;
   overflow: visible;
   background: #fff;
