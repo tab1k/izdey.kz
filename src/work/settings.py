@@ -162,21 +162,6 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 1
 
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'APP': {
-            'client_id': os.getenv('OAUTH_CLIENT_ID'),
-            'secret': os.getenv('OAUTH_CLIENT_SECRET'),
-            'key': ''
-        },
-        'SCOPE': [
-            'openid',
-            'profile',
-            'email',
-        ],
-    }
-}
-
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

@@ -1,0 +1,57 @@
+version: '3.8'
+
+volumes:
+  static_data:
+  media_data:
+  postgres_data:
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: izdey_db
+      POSTGRES_USER: tab1k
+      POSTGRES_PASSWORD: TOBI8585
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    tty: true
+    depends_on:
+      - db
+    environment:
+      DB_NAME: unitrade
+      DB_USER: tab1k
+      DB_PASSWORD: TOBI8585
+      DB_HOST: db
+      DB_PORT: "5432"
+    restart: always
+    volumes:
+      - .:/code
+      - static_data:/code/staticfiles
+      - media_data:/code/media
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    command: ["/code/docker-entrypoint.sh", "gunicorn", "unitrade.wsgi:application", "--bind", "0.0.0.0:8000"]
+
+  nginx:
+    image: nginx
+    restart: always
+    depends_on:
+      - web
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
+      - static_data:/code/staticfiles
+      - media_data:/code/media
