@@ -5,13 +5,17 @@ from favorites.models import Favorite
 from notifications.mixins import UnreadNotificationMixin
 from favorites.mixins import *
 from users.models import *
-
+from django.http import JsonResponse
+from django.http import JsonResponse
+from django.http import JsonResponse
+from django.views.generic import TemplateView
+from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class FavoritesPage(LoginRequiredMixin, FavoritesCountMixin, UnreadNotificationMixin, TemplateView):
     template_name = 'favorites/index.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get(self, request, *args, **kwargs):
         search_form = FavoriteSearchForm(self.request.GET or None)
         favorites = Favorite.objects.filter(user=self.request.user)
 
@@ -20,8 +24,16 @@ class FavoritesPage(LoginRequiredMixin, FavoritesCountMixin, UnreadNotificationM
             if query:
                 favorites = favorites.filter(job__title__icontains=query)
 
-        context['favorites'] = favorites
-        context['search_form'] = search_form
-        context['unread_count'] = self.get_unread_notification_count()  # Подсчет непрочитанных уведомлений
-        context['location_choices'] = UserProfile.LOCATION_CHOICES
-        return context
+        context = {
+            'favorites': favorites,
+            'search_form': search_form,
+            'unread_count': self.get_unread_notification_count(),
+            'location_choices': UserProfile.LOCATION_CHOICES
+        }
+
+        # Если это AJAX-запрос, возвращаем JSON с HTML-кодом вакансий
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            html = render(request, 'favorites/index.html', context).content.decode('utf-8')
+            return JsonResponse({'html': html})
+
+        return self.render_to_response(context)

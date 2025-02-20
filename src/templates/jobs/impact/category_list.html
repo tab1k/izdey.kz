@@ -26,7 +26,7 @@
 
 <section class="job-categories" style="padding-top: 40px; padding-bottom: 10px;">
     <div class="auto-container">
-        <form method="GET" class="mb-5" action=".">
+        <form id="search-form" method="GET" class="mb-5">
             <div class="input-group col-lg-6 col-md-12">
                 {{ search_form.query }}
                 <button type="submit" class="btn btn-light border-0"
@@ -36,7 +36,7 @@
             </div>
         </form>
 
-        <div class="row wow fadeInUp animated animated" style="margin-top: 30px;">
+        <div class="row wow fadeInUp animated animated" id="categories-container" style="margin-top: 30px;">
             {% for c in categories %}
             <div class="category-block-two at-home20">
                 <a href="{% url 'jobs:category-detail' pk=c.pk %}">
@@ -94,6 +94,10 @@
 
     /* Адаптивные стили */
     @media (max-width: 767px) {
+        .category-block-two h4 {
+            font-size: 15px;
+        }
+
         .category-block-two {
             flex: 0 0 50%; /* Занимает 50% ширины экрана на мобильных устройствах */
             max-width: 50%; /* Ограничение ширины до 50% */
@@ -101,6 +105,9 @@
     }
 
     @media (min-width: 768px) and (max-width: 991px) {
+        .category-block-two h4 {
+            font-size: 15px;
+        }
         .category-block-two {
             flex: 0 0 33.33%; /* Занимает 33.33% ширины экрана на устройствах среднего размера */
             max-width: 33.33%; /* Ограничение ширины до 33.33% */
@@ -108,6 +115,7 @@
     }
 
     @media (min-width: 992px) {
+
         .category-block-two {
             flex: 0 0 25%; /* Занимает 25% ширины экрана на десктопе */
             max-width: 25%; /* Ограничение ширины до 25% */
@@ -115,6 +123,26 @@
     }
 
 </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const searchForm = document.getElementById("search-form");
+    const categoriesContainer = document.getElementById("categories-container");
+
+    searchForm.addEventListener("input", function (event) {
+        event.preventDefault();
+        const formData = new FormData(searchForm);
+
+        fetch(window.location.pathname + "?" + new URLSearchParams(formData), {
+            headers: { "X-Requested-With": "XMLHttpRequest" }
+        })
+        .then(response => response.json())
+        .then(data => {
+            categoriesContainer.innerHTML = new DOMParser().parseFromString(data.html, "text/html").querySelector("#categories-container").innerHTML;
+        });
+    });
+});
+</script>
 {% endblock %}
 </body>
 </html>

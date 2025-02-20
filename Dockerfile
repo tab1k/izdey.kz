@@ -1,32 +1,33 @@
-# Используем официальный образ Python 3.10 на основе Slim
-FROM python:3.10-slim
+FROM python:3.10
 
-# Установка переменной окружения для отключения буферизации вывода Python (полезно для логов)
+# Установка зависимостей
+RUN apt-get update && apt-get install -y netcat-openbsd && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Установка рабочего каталога
+WORKDIR /code
+
+# Переменные окружения
 ENV PYTHONUNBUFFERED 1
 
-# Установка системных зависимостей для PostgreSQL и компиляции
-RUN apt-get update && apt-get install -y \
-    gcc \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
+# Копирование зависимостей и установка
+COPY requirements.txt /code/requirements.txt
+RUN pip install --upgrade pip && pip install -r /code/requirements.txt
 
-# Установка рабочей директории
-WORKDIR /app
-
-# Копирование requirements.txt в контейнер
-COPY requirements.txt /app/requirements.txt
-
-# Установка зависимостей из requirements.txt
-RUN pip install --no-cache-dir -r /app/requirements.txt
+# Установка Gunicorn
+RUN pip install --no-cache-dir gunicorn
 
 # Копирование проекта в контейнер
-COPY ./src /app
+COPY ./src /code/
 
-# Сбор статических файлов (если нужно для проекта)
-RUN python manage.py collectstatic --noinput
+# Копирование и установка прав для entrypoint
+COPY ./docker-entrypoint.sh /code/docker-entrypoint.sh
+RUN chmod +x /code/docker-entrypoint.sh
 
-# Экспорт порта для сервера
-EXPOSE 8000
+# Установка прав на статику и медиа
+RUN mkdir -p /code/staticfiles /code/media
 
-# Команда для запуска приложения через Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "work.wsgi:application"]
+# Исправление кодировки entrypoint
+RUN sed -i 's/\r$//' /code/docker-entrypoint.sh
+
+
+CMD ["gunicorn", "work.wsgi:application", "--bind", "0.0.0.0:8000"]

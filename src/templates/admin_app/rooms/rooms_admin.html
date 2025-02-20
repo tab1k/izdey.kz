@@ -32,23 +32,7 @@
                     </div>
                     <!-- Contacts grid -->
                     <div class="columns is-multiline is-contacts-grid">
-                      {% for r in rooms %}
-                      <div class="column is-4">
-                        <div class="contact-card">
 
-                          <!-- Contact info -->
-                          <div class="contact-block">
-                            <img src="{% static 'images/favicon.png' %}" alt="">
-                            <div class="contact-meta"> <span class="name"><a href="{% url 'admin_app:rooms_detail' pk=r.pk%}">{{ r.name }}</a></span>
-                              <span class="position">{{ r.time_start }}</span>
-                              <a href="{{ r.link }}" class="email">{{ r.link|slice:":15" }}</a> </div>
-                          </div>
-                          <div class="contact-actions"> <small class="tag is-curved">{{ r.get_status_display }}</small>
-
-                          </div>
-                        </div>
-                      </div>
-                      {% endfor %}
                     </div>
                   </div>
                 </div>

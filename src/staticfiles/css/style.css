@@ -188,8 +188,23 @@ button {
     height: 45px;
     background-color: #ffffff;
     border-radius: 10px;
-    border: 2px solid #e6e8ed;
+    border: 1px solid #ced4da;
     transition: all 300ms ease;
+}
+
+input#id_query {
+    border-radius: 10px;
+}
+
+a.theme-btn.btn-style-one.bg-blue.mb-4.mt-3 {
+    padding: 10px;
+}
+.theme-btn.btn-style-one {
+    padding: 10px;
+}
+
+button.theme-btn.btn-style-one {
+    padding: 10px;
 }
 
 a.link-back.link-back-mb.d-lg-none {
@@ -2425,7 +2440,7 @@ Buttons Styles
   line-height: 20px;
   border-radius: 8px;
   font-weight: 400;
-  padding: 18px 35px 15px 35px;
+
 }
 .btn-style-one i,
 .btn-style-three i{
@@ -7086,7 +7101,7 @@ Job Section
 
 .job-block .inner-box {
   position: relative;
-  padding: 10px 30px 10px 30px;
+  padding: 15px 30px 10px 30px;
   background: #FFFFFF;
   border: 1px solid #ECEDF2;
   box-sizing: border-box;
@@ -7157,7 +7172,7 @@ Job Section
 }
 
 .job-block h4 a:hover {
-  color: #1967D2;
+  color: green;
 }
 
 .job-block .job-info {
@@ -7193,8 +7208,8 @@ Job Section
 
 .job-block .bookmark-btn {
   position: absolute;
-  right: 0;
-  top: -15px;
+  right: 10px;
+  top: 5px;
   height: 30px;
   width: 30px;
   line-height: 35px;
@@ -9718,10 +9733,36 @@ Page Title
   top: 0;
   height: 100%;
   width: 100%;
-  background-image: url(../images/bg-4.png);
+  background-image: url();
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  opacity: 0.5;
+  content: "";
+}
+
+.page-titlez {
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    text-align: center;
+    padding: 50px 0 40px;
+    background: #F5F7FC;
+}
+
+
+.page-titlez:before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-image: url(../images/new_york.webp);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  opacity: 0.5;
   content: "";
 }
 

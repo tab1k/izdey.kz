@@ -5,7 +5,6 @@ from django.views.generic import ListView, DetailView, CreateView, DeleteView, U
 import uuid
 from admin_app.forms import UserProfileFormSet
 from users.models import *
-from rooms.models import Room
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
@@ -28,7 +27,6 @@ class AdminPanelView(AdminBaseView, TemplateView):
         context = super().get_context_data(**kwargs)
         context['users'] = User.objects.all()
         context['location_choices'] = UserProfile.LOCATION_CHOICES
-        context['rooms'] = Room.objects.all().order_by('-time_start')
         context['request'] = EmployerRequest.objects.all().order_by('-created_at')
         context['companies'] = CompanyProfile.objects.all().order_by('last_post_date')
         context['vacancies'] = Job.objects.filter(time_count='full')
@@ -54,46 +52,6 @@ class EmployerRequestDeleteView(AdminBaseView, DeleteView):
     model = EmployerRequest
     template_name = 'admin_app/employers/employer_request_confirm_delete.html'
     success_url = reverse_lazy('admin_app:employer-requests')
-
-# ----------------------------------------------------
-
-
-class RoomsListView(AdminBaseView,  ListView):
-    model = Room
-    template_name = 'admin_app/rooms/rooms_admin.html'
-    context_object_name = 'rooms'
-
-    def get_queryset(self):
-        return Room.objects.all()
-
-
-class RoomsCreateView(AdminBaseView, CreateView):
-    model = Room
-    fields = ['name', 'description']  # Укажите необходимые поля
-    template_name = 'admin_app/rooms/rooms_form.html'
-    success_url = reverse_lazy('admin_app:rooms')
-
-
-class RoomsUpdateView(AdminBaseView, UpdateView):
-    model = Room
-    fields = ['name', 'description']  # Укажите необходимые поля
-    template_name = 'admin_app/rooms/rooms_form.html'
-    success_url = reverse_lazy('admin_app:rooms')
-
-
-class RoomsDeleteView(AdminBaseView, DeleteView):
-    model = Room
-    template_name = 'admin_app/rooms/rooms_confirm_delete.html'
-    success_url = reverse_lazy('admin_app:rooms')
-
-
-class RoomsDetailView(AdminBaseView,  DetailView):
-    model = Room
-    template_name = 'admin_app/rooms/rooms_detail.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(RoomsDetailView, self).get_context_data(**kwargs)
-        return context
 
 # ----------------------------------------------------
 

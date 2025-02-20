@@ -11,11 +11,7 @@ urlpatterns = [
     path('employer-requests/detail/<int:pk>/', EmployerRequestDetailView.as_view(), name='employer_detail'),
     path('employer-requests/delete/<int:pk>/', EmployerRequestDeleteView.as_view(), name='employer_delete'),
 
-    path('rooms/', RoomsListView.as_view(), name='rooms'),
-    path('rooms/create/', RoomsCreateView.as_view(), name='rooms_create'),
-    path('rooms/update/<int:pk>/', RoomsUpdateView.as_view(), name='rooms_update'),
-    path('rooms/delete/<int:pk>/', RoomsDeleteView.as_view(), name='rooms_delete'),
-    path('rooms/detail/<int:pk>/', RoomsDetailView.as_view(), name='rooms_detail'),
+
 
     path('users/', UsersListView.as_view(), name='users'),
     path('users/create/', UserCreateView.as_view(), name='user_create'),

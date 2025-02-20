@@ -77,10 +77,10 @@
             <div class="category-block-two at-home20">
                 <div class="inner-box">
                     <div class="content">
-                        <a href="{% url 'rooms:room-list' %}">
+                        <a href="{% url 'offers:index' %}">
                             <span class="icon"><i style="color: #03b003;" class="fi fi-rr-plane-alt"></i></span>
                         </a>
-                        <h4><a href="#">W & T</a></h4>
+                        <h4><a href="{% url 'offers:index' %}">W & T</a></h4>
                     </div>
                 </div>
             </div>
@@ -172,7 +172,6 @@
                             </div>
 
 
-
                             <div class="filter-block">
                                 <h4>Оплата от</h4>
                                 <div class="form-group">
@@ -223,15 +222,6 @@
             <!-- Content Column -->
             <div class="content-column col-lg-8 col-md-12 col-sm-12">
                 <div class="ls-outer">
-
-                    <div class="container d-flex" style="justify-content: end; gap: 10px;">
-                        <div class="theme-btn btn-style-one mb-4" style="background-color: #34A853; height: 45px;">
-                            <button style="color: white;">Call-Центр</button>
-                        </div>
-                        <div class="theme-btn btn-style-one mb-4" style="background-color: #34A853; height: 45px;">
-                            <a href="{% url 'jobs:vacancy-create' %}" style="color: white;">Создать вакансию</a>
-                        </div>
-                    </div>
 
                     <style>
                         @media (max-width: 992px) {
@@ -292,19 +282,21 @@
 
 
                                                 <div class="col-xs-12 col-md-12 has-border">
-                                <div class="form-group form-group-title">
-                                    <label class="heading-label">Категория</label>
-                                    <div class="form-group-inner inner has-icon">
-                                        <i class="flaticon-magnifiying-glass"></i>
-                                        <select name="category" class="formkz-control selectpicker" data-live-search="true">
-                                            <option value="">Выберите категорию</option>
-                                            {% for category in filter.form.category.field.queryset %}
-                                                <option value="{{ category.id }}">{{ category.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+                                                    <div class="form-group form-group-title">
+                                                        <label class="heading-label">Категория</label>
+                                                        <div class="form-group-inner inner has-icon">
+                                                            <i class="flaticon-magnifiying-glass"></i>
+                                                            <select name="category" class="formkz-control selectpicker"
+                                                                    data-live-search="true">
+                                                                <option value="">Выберите категорию</option>
+                                                                {% for category in filter.form.category.field.queryset %}
+                                                                <option value="{{ category.id }}">{{ category.name }}
+                                                                </option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
 
                                                 <div class="col-xs-12 col-md-12 has-border">
@@ -337,7 +329,7 @@
                                                         <div class="form-group">
                                                             <label class="heading-label">Оплата до</label>
                                                             <div class="form-group-inner">
-                                                                 {{ filter.form.pay_rate__lte }}
+                                                                {{ filter.form.pay_rate__lte }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -361,7 +353,7 @@
 
                                 </div>
                                 <button type="submit" class="theme-btn btn-style-one bg-blue mb-4 mt-3"
-                                    style="background-color: #34A853;">Применить
+                                        style="background-color: #34A853;">Применить
                                 </button>
                             </form>
 
@@ -484,8 +476,7 @@
                                 <h4><a href="{% url 'jobs:vacancy-detail' pk=j.pk %}">{{ j.title }}</a></h4>
                                 <ul class="job-info">
                                     {% if j.employer.profile.company_profile %}
-                                    <li><span class="icon flaticon-briefcase"></span>{{
-                                        j.employer.profile.company_profile.name }}
+                                    <li><span class="icon flaticon-briefcase"></span>{{ j.employer.profile.company_profile.name }}
                                     </li>
                                     {% endif %}
                                     <li><span class="icon flaticon-map-locator"></span> {{ j.get_location_display }}
@@ -502,16 +493,273 @@
                                     <li class="required">Единоразовая услуга</li>
                                     {% endif %}
                                 </ul>
-                            </div>
+                            </div> <!-- Полноэкранное окно с фильтрами -->
+                                <div id="sidebar" class="sidebar">
+                                    <div class="sidebar-content">
+                                        <span class="close-btn" onclick="closeSidebar()">&times;</span>
+                                        <h2 onclick="closeSidebar()">Фильтры</h2>
+
+                                        <form class="form-search filter-listing-form-wrapper mt-3 mb-3" method="GET">
+                                            {% csrf_token %}
+
+                                            <div class="filter-listing-form vertical ">
+                                                <div class="main-inner clearfix">
+                                                    <div class="content-main-inner">
+                                                        <div class="row">
+
+                                                            <div class=" col-xs-12 col-md-12 has-border">
+                                                                <div class="form-group form-group-title ">
+                                                                    <label class="heading-label">
+                                                                        Ищите по названию </label>
+                                                                    <div class="form-group-inner inner has-icon">
+                                                                        <i class="flaticon-magnifiying-glass"></i>
+                                                                        {{ filter.form.title }}
+                                                                    </div>
+                                                                </div><!-- /.form-group -->
+                                                            </div>
+
+
+                                                            <div class="col-xs-12 col-md-12 has-border">
+                                                                <div class="form-group form-group-title">
+                                                                    <label class="heading-label">Категория</label>
+                                                                    <div class="form-group-inner inner has-icon">
+                                                                        <i class="flaticon-magnifiying-glass"></i>
+                                                                        <select name="category" class="formkz-control selectpicker"
+                                                                                data-live-search="true">
+                                                                            <option value="">Выберите категорию</option>
+                                                                            {% for category in filter.form.category.field.queryset %}
+                                                                            <option value="{{ category.id }}">{{ category.name }}
+                                                                            </option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="col-xs-12 col-md-12 has-border">
+                                                                <div class="form-group form-group-center-location  ">
+                                                                    <label class="heading-label">
+                                                                        Местоположение </label>
+                                                                    <div class="form-group-inner inner has-icon">
+                                                                        <i class="flaticon-location"></i>
+                                                                        <div class="action-location">
+                                                                            {{ filter.form.location }}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="col-md-6 col-12 has-border">
+                                                                    <div class="form-group form-group-center-location">
+                                                                        <label class="heading-label">Оплата от</label>
+                                                                        <div class="form-group-inner inner has-icon">
+                                                                            <i class="flaticon-location"></i>
+                                                                            <div class="action-location">
+                                                                                {{ filter.form.pay_rate__gte }}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label class="heading-label">Оплата до</label>
+                                                                        <div class="form-group-inner">
+                                                                            {{ filter.form.pay_rate__lte }}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <style>
+                                                                .col-md-6.col-12.has-border {
+                                                                    width: 48%;
+                                                                }
+                                                                .col-md-6.col-12 {
+                                                                    width: 48%;
+                                                                }
+                                                                .d-flex.align-items-center {
+                                                                    gap: 16px;
+                                                                }
+                                                            </style>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <button type="submit" class="theme-btn btn-style-one bg-blue mb-4 mt-3"
+                                                    style="background-color: #34A853;">Применить
+                                            </button>
+                                        </form>
+
+
+                                    </div>
+                                </div>
+
+                                <style>
+                                    .sidebar {
+                                        position: fixed;
+                                        top: 0;
+                                        left: 0;
+                                        width: 100%;
+                                        height: 100%;
+                                        background: rgba(0, 0, 0, 0.5);
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        opacity: 0;
+                                        visibility: hidden;
+                                        transition: opacity 0.3s ease, visibility 0.3s ease;
+                                        z-index: 1000;
+                                    }
+
+                                    .sidebar-content {
+                                        background: white;
+                                        width: 100%;
+                                        height: 100%;
+                                        padding: 20px;
+                                        border-radius: 0;
+                                        box-shadow: none;
+                                        transform: translateY(100%);
+                                        transition: transform 0.3s ease;
+                                        overflow-y: auto;
+                                    }
+
+                                    .sidebar.active {
+                                        opacity: 1;
+                                        visibility: visible;
+                                    }
+
+                                    .sidebar.active .sidebar-content {
+                                        transform: translateY(0);
+                                    }
+
+                                    .close-btn {
+                                        position: absolute;
+                                        top: 20px;
+                                        right: 20px;
+                                        font-size: 30px;
+                                        cursor: pointer;
+                                    }
+
+                                    .filters {
+                                        padding: 20px;
+                                    }
+
+                                    .filter-group {
+                                        margin-bottom: 20px;
+                                    }
+
+                                    .filter-group h3 {
+                                        margin-bottom: 10px;
+                                    }
+
+                                    .apply-filters {
+                                        width: 100%;
+                                        padding: 15px;
+                                        background: green;
+                                        color: white;
+                                        border: none;
+                                        font-size: 16px;
+                                        cursor: pointer;
+                                        border-radius: 5px;
+                                        margin-top: 20px;
+                                    }
+
+                                    .apply-filters:hover {
+                                        background: darkgreen;
+                                    }
+                                </style>
+
+                                <script>
+                                    function openSidebar() {
+                                        document.getElementById("sidebar").classList.add("active");
+                                    }
+
+                                    function closeSidebar() {
+                                        document.getElementById("sidebar").classList.remove("active");
+                                    }
+
+                                    // Закрытие при клике вне области
+                                    document.getElementById("sidebar").addEventListener("click", function(event) {
+                                        if (event.target === this) {
+                                            closeSidebar();
+                                        }
+                                    });
+                                </script>
                             <form action="{% url 'jobs:add_to_favorites' job_id=j.pk %}" method="post">
                                 {% csrf_token %}
-                                {% if j.favorite %}
-                                <button type="submit" class="bookmark-btn"><span class="icon la la-heart-o"></span>
+                                <button type="submit" class="bookmark-btn" data-job-id="{{ j.pk }}">
+                                    {% if j.is_favorite %}
+                                        <span class="icon la la-heart" style="color: #ff5757;"></span>
+                                    {% else %}
+                                        <span class="icon la la-heart-o" style="color: black;"></span>
+                                    {% endif %}
                                 </button>
-                                {% else %}
-                                <button type="submit" class="bookmark-btn"><span class="icon la la-heart"></span>
-                                </button>
-                                {% endif %}
+                                <style>
+
+                                    @media only screen and (max-width: 599px) {
+                                        .job-block-two .bookmark-btn, .job-block .bookmark-btn {
+                                            display: block;
+                                        }
+                                    }
+
+
+                                    .job-block .bookmark-btn {
+                                        position: absolute;
+                                        right: 10px;
+                                        top: 5px;
+                                        height: 30px;
+                                        width: 30px;
+                                        line-height: 35px;
+                                        text-align: center;
+                                        font-size: 14px;
+                                        border-radius: 50%;
+                                        cursor: pointer;
+                                        background: #ffffff;
+                                        transition: all 300ms ease;
+                                    }
+
+
+                                </style>
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", function () {
+                                        document.querySelectorAll(".bookmark-btn").forEach(function (button) {
+                                            button.addEventListener("click", function (event) {
+                                                event.preventDefault(); // Отменяем стандартную отправку формы
+
+                                                let form = button.closest("form");
+                                                let jobId = button.dataset.jobId;
+                                                let icon = button.querySelector(".icon");
+
+                                                fetch(form.action, {
+                                                    method: "POST",
+                                                    body: new FormData(form),
+                                                    headers: {
+                                                        "X-Requested-With": "XMLHttpRequest",
+                                                    },
+                                                })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    if (data.status === "added") {
+                                                        icon.classList.remove("la-heart-o");
+                                                        icon.classList.add("la-heart");
+                                                        icon.style.color = "#ff5757";
+                                                    } else if (data.status === "removed") {
+                                                        icon.classList.remove("la-heart");
+                                                        icon.classList.add("la-heart-o");
+                                                        icon.style.color = "";
+                                                    }
+                                                })
+                                                .catch(error => console.error("Ошибка:", error));
+                                            });
+                                        });
+                                    });
+                                    </script>
+
                             </form>
 
                         </div>
@@ -581,7 +829,7 @@
             <div class="image-column col-lg-6 col-md-12 col-sm-12">
                 <div class="bg-shape"></div>
                 <figure class="image wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
-                    <img style="" src="{% static 'images/laptopmob.png' %}" alt=""></figure>
+                    <img src="{% static 'images/laptopmob.png' %}" alt=""></figure>
             </div>
 
             <div class="content-column col-lg-6 col-md-12 col-sm-12">

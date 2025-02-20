@@ -139,6 +139,26 @@ class CustomPasswordResetView(PasswordResetView):
     form_class = CustomPasswordResetForm
 
 
+from django.http import JsonResponse
+from users.models import UserProfile
+
+
+def search_city(request):
+    query = request.GET.get("query", "").strip().lower()
+
+    # Все города из LOCATION_CHOICES
+    all_cities = [name for _, name in UserProfile.LOCATION_CHOICES]
+
+    if query:
+        # Фильтруем города, если есть поисковый запрос
+        cities = [city for city in all_cities if query in city.lower()]
+    else:
+        # Если строка пустая, показываем все города
+        cities = all_cities
+
+    return JsonResponse({"results": cities})
+
+
 # FUNCTION FOR CHANGE CITY
 @csrf_exempt
 def update_location(request):
@@ -148,7 +168,11 @@ def update_location(request):
             user_profile = request.user.profile
             user_profile.location = location
             user_profile.save()
-            return JsonResponse({'message': 'Location updated successfully'})
+
+            # Получаем название города, а не его код
+            location_name = dict(UserProfile.LOCATION_CHOICES).get(location, "Неизвестный город")
+
+            return JsonResponse({'message': 'Location updated successfully', 'new_location': location_name})
         else:
             return JsonResponse({'error': 'Invalid location'}, status=400)
     else:

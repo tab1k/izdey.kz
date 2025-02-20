@@ -1,5 +1,5 @@
 from datetime import timezone
-
+from django.db.models import Exists, OuterRef
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -19,7 +19,9 @@ from django.core.cache import cache
 from .forms import *
 from django.core.exceptions import ValidationError, PermissionDenied, ObjectDoesNotExist
 from django.contrib.auth import get_user_model
-
+from django.http import JsonResponse
+from django.views.generic import ListView
+from django.shortcuts import render
 from .models import JobResponse
 
 
@@ -29,6 +31,8 @@ class BaseLocation:
         context = super().get_context_data(**kwargs)
         context['location_choices'] = UserProfile.LOCATION_CHOICES
         return context
+
+
 
 
 class HomePageView(FavoritesCountMixin, UnreadNotificationMixin, ListView):
@@ -42,19 +46,21 @@ class HomePageView(FavoritesCountMixin, UnreadNotificationMixin, ListView):
     def get_queryset(self):
         queryset = super().get_queryset().filter(is_active=True).select_related('employer')
 
-        # Проверка фильтра по местоположению, если оно указано в GET-параметрах
-        location_filter = self.request.GET.get('location')
-        if location_filter:
-            queryset = queryset.filter(location=location_filter)
-        else:
-            # Проверка местоположения пользователя
-            if self.request.user.is_authenticated:
-                user_profile = getattr(self.request.user, 'profile', None)
-                if user_profile and user_profile.location:
-                    queryset = queryset.filter(location=user_profile.location)
-            else:
-                # Если пользователь не авторизован, отображаем все вакансии
-                queryset = queryset.all()
+        # Применяем фильтры из JobFilter (location, title, category и оплата)
+        filterset = self.filterset_class(self.request.GET, queryset=queryset)
+        if filterset.is_valid():
+            queryset = filterset.qs  # Применяем отфильтрованный queryset
+
+        # 📌 Если пользователь НЕ выбрал город вручную, применяем его город из профиля
+        if not self.request.GET.get('location'):  # Если в GET-запросе нет 'location'
+            if self.request.user.is_authenticated and hasattr(self.request.user,
+                                                              'profile') and self.request.user.profile.location:
+                queryset = queryset.filter(location=self.request.user.profile.location)
+
+        # Оптимизируем проверку "избранных" вакансий
+        if self.request.user.is_authenticated:
+            favorite_subquery = Favorite.objects.filter(user=self.request.user, job=OuterRef('pk'))
+            queryset = queryset.annotate(is_favorite=Exists(favorite_subquery))
 
         return queryset
 
@@ -67,14 +73,7 @@ class HomePageView(FavoritesCountMixin, UnreadNotificationMixin, ListView):
         })
         return context
 
-    def render_to_response(self, context, **response_kwargs):
-        if self.request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            try:
-                html = render_to_string('jobs/index_content.html', context, request=self.request)
-                return JsonResponse({'html': html})
-            except Exception as e:
-                return JsonResponse({'error': str(e)}, status=500)
-        return super().render_to_response(context, **response_kwargs)
+
 
     def get_cache_key(self):
         """Generate a unique cache key based on request parameters."""
@@ -199,17 +198,14 @@ class Error404View(TemplateView, FavoritesCountMixin, UnreadNotificationMixin, )
 class AddToFavoritesView(LoginRequiredMixin, View):
     def post(self, request, job_id):
         job = get_object_or_404(Job, pk=job_id)
-        # Проверяем, есть ли уже вакансия в избранном пользователя
         favorite = Favorite.objects.filter(user=request.user, job=job).first()
 
         if favorite:
             favorite.delete()
-            added = False
+            return JsonResponse({"status": "removed"})
         else:
             Favorite.objects.create(user=request.user, job=job)
-            added = True
-
-        return redirect('jobs:vacancy-detail', pk=job_id)
+            return JsonResponse({"status": "added"})
 
 
 class RemoveFromFavoritesView(View):
@@ -219,16 +215,16 @@ class RemoveFromFavoritesView(View):
         return redirect('favorites:favorites-list')
 
 
+
+
 class CategoryListView(BaseLocation, FavoritesCountMixin, UnreadNotificationMixin, ListView):
     model = Category
     template_name = 'jobs/impact/category_list.html'
     context_object_name = 'categories'
 
     def get_queryset(self):
-        # Получаем базовый queryset для категорий
         queryset = Category.objects.all().order_by('name')
 
-        # Получаем данные из формы и фильтруем queryset
         search_form = CategorySearchForm(self.request.GET or None)
         if search_form.is_valid():
             query = search_form.cleaned_data.get('query')
@@ -239,12 +235,17 @@ class CategoryListView(BaseLocation, FavoritesCountMixin, UnreadNotificationMixi
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        # Добавляем форму в контекст
         search_form = CategorySearchForm(self.request.GET or None)
         context['search_form'] = search_form
-
         return context
+
+    def render_to_response(self, context, **response_kwargs):
+        # Если это AJAX-запрос, возвращаем только обновлённый список категорий
+        if self.request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            html = render(self.request, 'jobs/impact/category_list.html', context).content.decode('utf-8')
+            return JsonResponse({'html': html})
+
+        return super().render_to_response(context, **response_kwargs)
 
 
 class CategoryDetailView(BaseLocation, LoginRequiredMixin, FavoritesCountMixin, UnreadNotificationMixin, DetailView):

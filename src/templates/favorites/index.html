@@ -25,7 +25,7 @@
                     <div class="tabs-box" style="min-height: 500px;">
 
                         <div class="widget-content">
-                            <form method="GET" class="mb-5" action="{% url 'favorites:favorites-list' %}">
+                            <form id="search-form" method="GET" class="mb-5">
                                 <div class="input-group col-lg-6 col-md-12">
                                     {{ search_form.query }}
                                     <button type="submit" class="btn btn-light border-0"
@@ -38,7 +38,7 @@
                                 <div class="tabs-content">
                                     <!--Tab-->
                                     <div class="tab active-tab" id="totals">
-                                        <div class="row">
+                                        <div class="row" id="favorites-container">
                                             {% if favorites %}
                                             {% for favorite in favorites %}
                                             <div class="candidate-block-three col-lg-6 col-md-12 col-sm-12">
@@ -95,6 +95,8 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            {% empty %}
+                                            <p>Нет схожих вакансий</p>
                                             {% endfor %}
                                             {% else %}
                                             <div class="container text-center" style="margin-top: 20px;">
@@ -116,4 +118,24 @@
         </div>
     </div>
 </section>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const searchForm = document.getElementById("search-form");
+    const favoritesContainer = document.getElementById("favorites-container");
+
+    searchForm.addEventListener("input", function (event) {
+        event.preventDefault();
+        const formData = new FormData(searchForm);
+
+        fetch(window.location.pathname + "?" + new URLSearchParams(formData), {
+            headers: { "X-Requested-With": "XMLHttpRequest" }
+        })
+        .then(response => response.json())
+        .then(data => {
+            favoritesContainer.innerHTML = new DOMParser().parseFromString(data.html, "text/html").querySelector("#favorites-container").innerHTML;
+        });
+    });
+});
+</script>
+
 {% endblock %}

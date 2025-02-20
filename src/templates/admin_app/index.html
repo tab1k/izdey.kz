@@ -14,16 +14,11 @@
               <div class="column">
                 <!--Menu-->
                 <div class="feed-channels">
-                  <a href="{% url 'admin_app:rooms' %}" class="card-heading h3" style="margin-bottom: 15px;">Голосовые комнаты</a>
+                  <a href="#" class="card-heading h3" style="margin-bottom: 15px; color: black;">Работа за рубежом</a>
 
                   <div class="menu-items">
 
-                    {% for r in rooms %}
-                      <a href="{% url 'admin_app:rooms_detail' pk=r.pk %}" class="menu-item">
-                        <i class="im icon-Megaphone"></i>
-                        <div class="meta"> <span>{{ r.name }}</span> <span>{{ r.time_start }} | {{ r.speaker }}</span> </div>
-                      </a>
-                    {% endfor %}
+
 
                   </div>
                 </div>

@@ -21,7 +21,6 @@
     <!-- Bootstrap Select -->
 
 
-
     <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
     <link rel="icon" href="{% static 'favicon.png' %}" type="image/x-icon">
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon.png' %}">
@@ -270,53 +269,23 @@
 
             <!--Nav Box-->
             <div class="nav-outer clearfix">
-                <div class="outer-box" style="margin: 0px;">
+                <div class="outer-box">
                     <!-- Dropdown для выбора города -->
                     {% if user.is_authenticated %}
                     <div class="dropdown dashboard-option show d-flex">
-                        <button class="menu-btn" data-toggle="dropdown" aria-expanded="true">
-                            <span class="icon la la-map-marker"></span>
+                        <button id="centersService" class="menu-btn">
+                            <span><i class="fi fi-rr-city"></i></span>
                         </button>
 
-                        <ul class="dropdown-menu">
-                            {% csrf_token %}
-                            {% for location_code, location_name in location_choices %}
-                            <li><a href="#" class="location-link" data-location="{{ location_code }}"><i
-                                    style="color: green;" class="fi fi-rr-house-building"></i> {{ location_name }}</a>
-                            </li>
-                            {% endfor %}
-                        </ul>
                     </div>
                     {% endif %}
 
                     <!-- Dropdown для профиля пользователя -->
                     {% if user.is_authenticated %}
-                    <div class="dropdown dashboard-option">
-                        <a role="button" data-toggle="dropdown" aria-expanded="false">
-                            {% if user.profile.image %}
-                            <img style="width: 40px; height: 40px;"
-                                 src="{{ user.profile.image.url }}" alt="avatar"
-                                 class="thumb">
-                            {% else %}
-                            <img style="width: 40px; height: 40px;"
-                                 src="{% static 'images/favicon.png' %}" alt="avatar"
-                                 class="thumb">
-                            {% endif %}
+                    <div class="" style="margin-left: 13px;">
+                        <a href="{% url 'myaccount:profile' %}">
+                            <span><i class="fi fi-rr-user"></i></span>
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'myaccount:profile' %}"><i
-                                    class="la la-user-alt"></i>Профиль</a></li>
-                            <li><a class="dropdown-item" href="{% url 'admin_app:info' %}"><i
-                                    class="la la-briefcase"></i>Админ-панель</a></li>
-                            <!--                            <li>-->
-                            <!--                                <form action="{% url 'users:logout' %}" method="post" style="display: inline;">-->
-                            <!--                                    {% csrf_token %}-->
-                            <!--                                    <button type="submit" class="dropdown-item">-->
-                            <!--                                        <i class="la la-sign-out"></i> Выйти-->
-                            <!--                                    </button>-->
-                            <!--                                </form>-->
-                            <!--                            </li>-->
-                        </ul>
                     </div>
                     {% endif %}
 
@@ -326,6 +295,17 @@
 
 
         <style>
+
+            i.fi.fi-rr-city {
+                color: #434343 !important;
+                font-size: larger;
+            }
+
+            i.fi.fi-rr-user {
+                color: #434343 !important;
+                font-size: larger;
+                margin-right: 5px;
+            }
 
             .logo {
                 display: flex;
@@ -342,35 +322,194 @@
 
             .outer-box {
                 display: flex;
-                align-items: center; /* Центрирование элементов внутри по вертикали */
-            }
-
-            .dropdown.dashboard-option {
-                display: flex;
-                align-items: center; /* Центрирование dropdown по вертикали */
-            }
-
-            .dropdown-menu {
-                display: none;
-            }
-
-            .dropdown-menu.show {
-                display: block !important;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                transform: translate3d(0, 0, 0) !important;
-            }
-
-            .menu-btn, .dropdown > a {
-                cursor: pointer;
-
             }
 
         </style>
 
 
     </header>
+
+    <!-- Bottom sheet для Центры обслуживания -->
+    <div id="centersServiceSheet" style="border-radius: 25px;" class="bottom-sheet">
+        <div class="bottom-sheet-content">
+            <span class="close-btn" onclick="closeBottomSheet('centersServiceSheet')">&times;</span>
+            <h2>Выберите город</h2>
+
+            <div class="mt-3">
+                <form id="search-form" method="GET" class="mb-3 mt-1">
+                    <div class="input-group col-lg-6 col-md-12">
+                        <input type="text" name="query" class="formkz-control" placeholder="Найти город" id="id_query">
+                        <button type="submit" class="btn btn-light border-0"
+                                style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: none;">
+                            <i class="fi fi-rr-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <ul id="search-results">
+                    {% csrf_token %}
+                    {% for location_code, location_name in location_choices %}
+                    <a style="color: black;" class="location-link" data-location="{{ location_code }}">
+                        <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                            <div style="display: flex; align-items: center;">
+                                <span class="icon fi fi-rr-city"
+                                      style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                <span style="font-size: 16px; font-weight: 500;">{{ location_name }}</span>
+                            </div>
+                            <span style="color: #333; font-size: 20px;">&rsaquo;</span>
+                        </li>
+                    </a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .hidden {
+            display: none !important;
+        }
+
+        .bottom-sheet {
+            position: fixed;
+            bottom: -100%; /* Изначально скрыто */
+            left: 0;
+            width: 100%;
+            height: 90%; /* Можно настроить по высоте */
+            background-color: white;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+            transition: bottom 0.3s ease;
+            z-index: 101; /* z-index для bottom sheet выше navbar */
+        }
+
+        .bottom-sheet-content {
+            padding: 20px;
+            padding-bottom: 60px; /* Отступ для navbar */
+
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const body = document.body;
+            const bottomSheet = document.getElementById('centersServiceSheet');
+            const locationLinks = document.querySelectorAll('.location-link');
+            const closeBtn = document.querySelector('.close-btn');
+            const navbar = document.querySelector('.navbar-mobile');
+
+            function openBottomSheet() {
+                bottomSheet.style.bottom = '0';
+                body.style.overflow = 'hidden'; // Отключаем прокрутку фона
+                navbar.classList.add("hidden");
+            }
+
+            function closeBottomSheet() {
+                bottomSheet.style.bottom = '-100%';
+                body.style.overflow = ''; // Включаем прокрутку обратно
+                navbar.classList.remove("hidden");
+            }
+
+            // Открытие окна
+            document.getElementById('centersService').addEventListener('click', openBottomSheet);
+
+            // Закрытие окна
+            closeBtn.addEventListener('click', closeBottomSheet);
+
+            // Закрытие по клику вне окна
+            window.addEventListener('click', function (e) {
+                if (e.target === bottomSheet) {
+                    closeBottomSheet();
+                }
+            });
+
+            // Обновление местоположения без перезагрузки (AJAX)
+            locationLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const locationCode = this.getAttribute('data-location');
+
+                    fetch("{% url 'users:update_location' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: new URLSearchParams({ 'location': locationCode })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            document.getElementById('selectedCity').innerText = data.new_location; // Обновляем название города
+                            closeBottomSheet();
+                        } else if (data.error) {
+                            console.error('Ошибка:', data.error);
+                        }
+                    })
+                    .catch(error => console.error('Ошибка:', error));
+                });
+            });
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#id_query").on("input", function() {
+                let query = $(this).val().trim();
+
+                if (query.length >= 1) {  // Начинаем искать после 1 символов
+                    $.ajax({
+                        url: "{% url 'users:search_city' %}",  // URL API
+                        method: "GET",
+                        data: { query: query },
+                        dataType: "json",
+                        success: function(response) {
+                            let results = response.results;
+                            let resultHtml = "";
+
+                            if (results.length > 0) {
+                                results.forEach(function(city) {
+                                    resultHtml += `
+                                        <a style="color: black;" class="location-link" data-location="${city.code}">
+                                            <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                                                <div style="display: flex; align-items: center;">
+                                                    <span class="icon fi fi-rr-city" style="margin-right: 15px; font-size: 22px; color: #03b003;"></span>
+                                                    <span style="font-size: 16px; font-weight: 500;">${city}</span>
+                                                </div>
+                                                <span style="color: #333; font-size: 20px;">&rsaquo;</span>
+                                            </li>
+                                        </a>
+                                    `;
+                                });
+                            } else {
+                                resultHtml = "<li class='text-muted' style='padding: 10px; text-align: center;'>Город не найден</li>";
+                            }
+
+                            $("#search-results").html(resultHtml).show();
+                        }
+                    });
+                } else {
+                    $("#search-results").hide();
+                }
+            });
+
+            // Выбор города из списка
+            $(document).on("click", "#search-results li", function() {
+                $("#id_query").val($(this).text());
+                $("#search-results").hide();
+            });
+        });
+    </script>
+
+
+
     <!--End Main Header -->
 
     <!--Page Title-->
@@ -429,74 +568,72 @@
         <ul class="navbar-nav">
             <!-- Nav item Home -->
             <li class="nav-item">
-                <a class="nav-link" style="color: green;" href="{% url 'jobs:home' %}">
+                <button class="nav-link btn btn-link" style="color: green;"
+                        onclick="window.location.href='{% url 'jobs:home' %}'">
                     <i class="fi-rr-home"></i>
                     <span class="mb-0 nav-text">Главная</span>
-                </a>
+                </button>
             </li>
 
-
+            <!-- Nav item Responses -->
             <li class="nav-item">
-                <a class="nav-link"
-                   href="{% url 'myaccount:responses' %}">
+                <button class="nav-link btn btn-link" onclick="window.location.href='{% url 'myaccount:responses' %}'">
                     <i class="fi fi-rr-envelope-plus"></i>
                     <span class="mb-0 nav-text">Отклики</span>
-                </a>
+                </button>
             </li>
 
             <!-- Nav item Create -->
             <li class="nav-item">
                 {% if user.is_authenticated %}
                 {% if user.profile.account_type == 'employer' %}
-                <a class="nav-link" href="{% url 'jobs:vacancy-create' %}">
+                <button class="nav-link btn btn-link" onclick="window.location.href='{% url 'jobs:vacancy-create' %}'">
                     <i class="fi fi-rr-add"></i>
                     <span class="mb-0 nav-text">Создать</span>
-                </a>
+                </button>
                 {% else %}
-                <a class="nav-link ajax-link" href="{% url 'jobs:service-create' %}">
+                <button class="nav-link btn btn-link ajax-link"
+                        onclick="window.location.href='{% url 'jobs:service-create' %}'">
                     <i class="fi fi-rr-add"></i>
                     <span class="mb-0 nav-text">Создать</span>
-                </a>
+                </button>
                 {% endif %}
                 {% else %}
-                <a class="nav-link"
-                   href="{% url 'users:signin' %}">
+                <button class="nav-link btn btn-link" onclick="window.location.href='{% url 'users:signin' %}'">
                     <i class="fi fi-rr-add"></i>
                     <span class="mb-0 nav-text">Создать</span>
-                </a>
+                </button>
                 {% endif %}
             </li>
 
             <!-- Nav item Favorites -->
             <li class="nav-item">
                 {% if user.is_authenticated %}
-                <a class="nav-link"
-                   href="{% url 'favorites:favorites-list' %}">
+                <button class="nav-link btn btn-link"
+                        onclick="window.location.href='{% url 'favorites:favorites-list' %}'">
                     <i class="fi fi-rr-heart"></i>
                     <span class="mb-0 nav-text">Избранное</span>
-                </a>
+                </button>
                 {% else %}
-                <a class="nav-link">
+                <button class="nav-link btn btn-link">
                     <i class="fi fi-rr-heart"></i>
                     <span class="mb-0 nav-text">Избранное</span>
-                </a>
+                </button>
                 {% endif %}
             </li>
 
             <!-- Nav item Account -->
             <li class="nav-item">
                 {% if user.is_authenticated %}
-                <a class="nav-link"
-                   href="{% url 'myaccount:settings' %}">
+                <button class="nav-link btn btn-link" onclick="window.location.href='{% url 'myaccount:settings' %}'">
                     <i class="fi fi-rr-circle-user"></i>
                     <span class="mb-0 nav-text">Аккаунт</span>
-                </a>
+                </button>
                 {% else %}
-                <a class="nav-link"
-                   href="{% url 'users:signin' %}">
+                <button class="nav-link btn btn-link" onclick="window.location.href='{% url 'users:signin' %}'">
                     <i class="fi fi-rr-circle-user"></i>
                     <span class="mb-0 nav-text">Войти</span>
-                </a>
+                </button>
                 {% endif %}
             </li>
         </ul>
@@ -576,8 +713,8 @@
                     <div class="big-column col-xl-4 col-lg-3 col-md-12">
                         <div class="footer-column about-widget">
                             <div class="logo">
-                                <a href="{% url 'jobs:home' %}"><img src="{% static 'images/favicon.png' %}"
-                                                                     style="height: 100px;" alt=""></a>
+                                <a href="{% url 'jobs:home' %}"><img src="{% static 'izdey_logo.png' %}"
+                                                                     style="height: 30px;" alt=""></a>
                             </div>
                             <p class="phone-num"><span>Звоните </span><a href="tel:+77077449406" style="color: green;">+77077449406</a>
                             </p>

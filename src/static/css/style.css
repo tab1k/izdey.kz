@@ -199,6 +199,10 @@ input#id_query {
 a.theme-btn.btn-style-one.bg-blue.mb-4.mt-3 {
     padding: 10px;
 }
+.theme-btn.btn-style-one {
+    padding: 10px;
+}
+
 
 button.theme-btn.btn-style-one {
     padding: 10px;
@@ -207,6 +211,10 @@ button.theme-btn.btn-style-one {
 a.link-back.link-back-mb.d-lg-none {
     color: black;
     margin-bottom: 0px;
+}
+
+button.theme-btn.btn-style-one {
+    background-color: #34A853;
 }
 
 @media (max-width: 768px) {
@@ -226,6 +234,79 @@ a.link-back.link-back-mb.d-lg-none {
     height: 16px;
     background: url(../images/arrow-left.svg);
 }
+
+.sidebar {
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background: rgba(0, 0, 0, 0.5);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            opacity: 0;
+                            visibility: hidden;
+                            transition: opacity 0.3s ease, visibility 0.3s ease;
+                            z-index: 1000;
+                        }
+
+                        .sidebar-content {
+                            background: white;
+                            width: 100%;
+                            height: 100%;
+                            padding: 20px;
+                            border-radius: 0;
+                            box-shadow: none;
+                            transform: translateY(100%);
+                            transition: transform 0.3s ease;
+                            overflow-y: auto;
+                        }
+
+                        .sidebar.active {
+                            opacity: 1;
+                            visibility: visible;
+                        }
+
+                        .sidebar.active .sidebar-content {
+                            transform: translateY(0);
+                        }
+
+                        .close-btn {
+                            position: absolute;
+                            top: 20px;
+                            right: 20px;
+                            font-size: 30px;
+                            cursor: pointer;
+                        }
+
+                        .filters {
+                            padding: 20px;
+                        }
+
+                        .filter-group {
+                            margin-bottom: 20px;
+                        }
+
+                        .filter-group h3 {
+                            margin-bottom: 10px;
+                        }
+
+                        .apply-filters {
+                            width: 100%;
+                            padding: 15px;
+                            background: green;
+                            color: white;
+                            border: none;
+                            font-size: 16px;
+                            cursor: pointer;
+                            border-radius: 5px;
+                            margin-top: 20px;
+                        }
+
+                        .apply-filters:hover {
+                            background: darkgreen;
+                        }
 
 p,
 .text {
@@ -7098,7 +7179,7 @@ Job Section
 
 .job-block .inner-box {
   position: relative;
-  padding: 10px 30px 10px 30px;
+  padding: 15px 30px 10px 30px;
   background: #FFFFFF;
   border: 1px solid #ECEDF2;
   box-sizing: border-box;
@@ -7169,7 +7250,7 @@ Job Section
 }
 
 .job-block h4 a:hover {
-  color: #1967D2;
+  color: green;
 }
 
 .job-block .job-info {
@@ -7205,8 +7286,8 @@ Job Section
 
 .job-block .bookmark-btn {
   position: absolute;
-  right: 0;
-  top: -15px;
+  right: 10px;
+  top: 5px;
   height: 30px;
   width: 30px;
   line-height: 35px;
@@ -9730,10 +9811,35 @@ Page Title
   top: 0;
   height: 100%;
   width: 100%;
-  background-image: url(../images/bg-4.png);
+  background-image: url();
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  opacity: 0.5;
+  content: "";
+}
+
+.page-titlez {
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    text-align: center;
+    padding: 50px 0 40px;
+    background: #F5F7FC;
+}
+
+.page-titlez:before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-image: url(../images/new_york.webp);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  opacity: 0.5;
   content: "";
 }
 

@@ -12,7 +12,7 @@ urlpatterns = [
     path('wallet/', include('wallet.urls')),
     path('notifications/', include('notifications.urls')),
     path('admin-panel/', include('admin_app.urls')),
-    path('rooms/', include('rooms.urls')),
+    path('offers/', include('offers.urls')),
 
     # ALLAUTH
     path('accounts/', include('allauth.urls')),

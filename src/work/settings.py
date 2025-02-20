@@ -46,8 +46,8 @@ INSTALLED_APPS = [
     "notifications.apps.NotificationsConfig",
     "admin_app.apps.AdminAppConfig",
     "myaccount.apps.MyAccountConfig",
-    "rooms.apps.RoomsConfig",
     "resume.apps.ResumeConfig",
+    "offers.apps.OffersConfig",
     'django_user_agents',
 
     # ALLAUTH
