@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -115,6 +116,18 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'izdey_db',
+#         'USER': 'tab1k',
+#         'PASSWORD': 'TOBI8585',
+#         'HOST': 'localhost',  # Или IP сервера, если база не локальная
+#         'PORT': '5432',  # По умолчанию для PostgreSQL
+#     }
+# }
 
 
 # Password validation

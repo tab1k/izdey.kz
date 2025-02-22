@@ -1,19 +1,13 @@
-#!/bin/bash
+#!/bin/sh
 
-# Ждём, пока база данных будет доступна
-echo "Waiting for PostgreSQL..."
-while ! nc -z "$DB_HOST" "$DB_PORT"; do
+echo "Waiting for PostgreSQL to start..."
+until nc -z db 5432; do
   sleep 1
 done
-echo "PostgreSQL started"
+echo "PostgreSQL started!"
 
-# Применение миграций
-echo "Applying migrations..."
+# Выполняем миграции
 python manage.py migrate
 
-# Сборка статических файлов
-echo "Collecting static files..."
-python manage.py collectstatic --noinput
-
-# Передаём управление основной команде контейнера
+# Запускаем сервер
 exec "$@"
