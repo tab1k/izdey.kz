@@ -7,6 +7,7 @@ done
 echo "PostgreSQL started!"
 
 # Выполняем миграции
+python manage.py makemigrations
 python manage.py migrate
 
 # Запускаем сервер
